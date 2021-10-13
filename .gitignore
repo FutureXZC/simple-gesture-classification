@@ -3,3 +3,4 @@ log*
 events
 checkpoints
 __pycache__
+*.onnx
