@@ -37,7 +37,8 @@ def convert(num_classes: int):
                       "cls.onnx",
                       verbose=True,
                       input_names=input_names,
-                      output_names=output_names)
+                      output_names=output_names,
+                      opset_version=10)
     example_model = get_example('/home/czx/simple-gesture-classification/cls.onnx')
     sess = onnxruntime.InferenceSession(example_model)
     print(example_model)
