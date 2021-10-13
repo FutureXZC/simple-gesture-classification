@@ -1,0 +1,222 @@
+固件升级手册
+========================
+本章节我们将会围绕 X3 SDB 开发板介绍如何进行板卡系统固件升级，J3 DVB开发版本使用方法类似。
+
+1. 系统镜像
+----------------
+
+XJ3 芯片的系统为 ``嵌入式Linux`` ，固件采用预先编译好镜像 ``X3J3-Img-PL2.0-${version}.tgz`` 和PlatformSDK源码 ``X3J3-PlatformSDK-PL2.0-${version}.tgz`` 两种方式进行发布，详细请参考 ``bsp/`` 发布目录。其中对于 PlatformSDK 源码发布包，支持用户根据自己的需求来对源码功能进行裁剪或修改，并编译生成自己私有的系统镜像。
+
+在 PlatformSDK 源码包中，我们已经自带交叉编译工具链，并配置好了编译脚本等参数，路径在 ``bsp/PlatformSDK/prebuilts/host``，用户只需要搭建好编译环境，即可快速完成系统镜像的源码编译。目前我们支持在Ubuntu18.04 和 Centos7 两个系统下编译 PlatformSDK。
+
+对于 Ubuntu18.04，需要按照以下命令搭建编译环境:
+
+.. code-block:: shell
+
+	sudo apt install build-essential
+	sudo apt-get install make
+	sudo apt install cmake
+	sudo apt install bison
+	sudo apt install flex
+	sudo apt-get install python-numpy
+	sudo apt install android-tools-fsutils
+	sudo apt install mtd-utils
+	sudo apt install zlib1g-dev
+
+  
+对于 Centos7 系统，需要按照如下命令搭建编译环境：
+
+.. code-block:: shell
+
+	yum install glib cmake gcc bison flex minicom python-pip
+	pip install numpy
+	yum install make_ext4fs-1.0.0-1.el7.x86_64.rpm
+	yum install zlib-devel
+	yum install mtd-utils-1.5.0-2.el6.nux.x86_64.rpm
+	
+
+环境配置后，采用如下指令进行编译：
+
+.. code-block:: shell
+
+	source ./build/envsetup.sh
+	lunch
+	./build.sh
+
+编译完成会输出一个 ``PLATFORMSDK_OUT`` 目录，与预先编译好的镜像 ``X3J3-Img-PL2.0-${version}.tgz`` 压缩包解压后的目录结构一致，如下所示。
+
+.. code-block:: shell
+
+	PLATFORMSDK_OUT
+	├── gen_disk.sh
+	├── gen_ota.sh
+	├── 0-emmc-2666-ut-gpt.conf
+	├── 0-emmc-2666-ut-gpt-dual.conf
+	├── app.img
+	├── bl31.img
+	├── ddr.img
+	├── gpt_backup_dual.img
+	├── gpt_backup.img
+	├── gpt_main_dual.img
+	├── gpt_main.img
+	├── recovery.img
+	├── sbl_secure.img
+	└── veeprom.img
+
+
+``PLATFORMSDK_OUT`` 目录中包含了每个分区镜像及 ``gen_disk.sh`` 打包脚本，说明如下。
+
+.. code-block:: shell
+
+	脚本使用说明：
+	./gen_disk.sh <-b board> [-s] [-u] [-o output_file]
+		–b 参数为打包镜像的版本，目前支持 xj3/xj3_ddr4 两种产品的镜像，且-b 参数必须填 写
+		-s 参数为产品是否为 security 镜像，烧写 efuse 的芯片镜像需要增加该参数
+		-u 参数为是否带 app 分区镜像，增加-u 参数，将会把 app.img 打包到镜像 app 分区，系统启动后自动加载
+		-o 参数为输出镜像名称，为配合下载工具使用，请镜像名称以”disk”为开头
+		-F 参数为忽略Warning报错(比如bpu img默认不发布，会报Warning报错)，继续生成镜像文件
+	示例如下:
+	build xj3 UT disk image: ./gen_disk.sh -b xj3 -u
+	build xj3 disk image: ./gen_disk.sh -b xj3
+	build xj3 secure disk image: ./gen_disk.sh -b xj3 -F -s secure
+	build xj3 secure disk image: ./gen_disk.sh -b xj3 –o disk_example.img -F -s secure
+
+	
+
+通过 ``gen_disk.sh`` 脚本可以生成最终系统升级固件镜像 image 文件。
+
+2. 升级工具
+----------------
+
+针对板卡系统升级，我们提供了一键式工具 hbupdate，支持通过网口，串口以及 USB 口对板卡进行升级，完整工具集合请参考 ``tools/`` 目录，其中包括：
+
+1. **0A_PL2302-USB-to-Serial-Comm-Port.zip**：PL2303 串口驱动
+2. **0A_CP210x_USB2UART_Driver.zip**: CP210X 串口驱动
+3. **0A_PL2303-M_LogoDriver_Setup_v202_20200527.zip**: PL2302 串口驱动
+4. **0B_hbupdate_win64_${version}.zip**：用于 Window 64 环境下的一键式升级工具
+5. **0B_hbupdate_linux_cli_${version}.tgz**: 用于 Ubuntu 环境下的命令行升级工具
+6. **0B_hbupdate_linux_gui_${version}.tgz**：用于 Ubuntu 环境下的一键式升级工具
+7. **0B_hbupdate_burn_secure-key1.zip**：用于 Window 64 环境下，将芯片烧写成 secure chip 的 hbupdate 升级工具
+
+.. note::
+	secure chip 是一种系统安全保护机制，避免芯片软件系统运行过程中被强制破解，从而提高对应用系统和数据的安全保护。
+	如果你手上当前的板卡芯片为非 secure chip，那么你第一次需要先使用 ``0B_hbupdate_burn_secure-key1.zip`` 工具，将芯片刷机成 secure chip，以后就可以使用普通 ``hbupdate`` 工具进行升级。
+	secure chip 是不可逆的，首次使用 ``0B_hbupdate_burn_secure-key1.zip`` 刷机成功后，未来都需要通过 ``./gen_disk.sh -b xj3 -F -s secure`` 方式来生成 secure 的系统镜像。
+
+	由于 secure chip 对应用层无感，所以我们建议优先将芯片刷成 secure chip，以保证芯片开发系统和未来应用系统一致。
+
+.. important::  
+	secure chip的镜像与non-secure chip的镜像互不兼容，即，secure chip的开发板无法烧录non-secure chip的镜像，non-secure chip的开发板无法烧录secure的系统镜像。
+
+在连接开发板进行 hbupdate 之前，请优先在你的宿主机系统中安装串口驱动，我们默认提供了 CP210X、PL2302、PL2303 系列串口驱动，请根据你的宿主机系统选择对应驱动进行安装，或者依次尝试。如果三个驱动安全完成后还是无法正确连接开发板，请联系地平线技术支持进行解决。
+
+打开 hbupdate 升级工具，会有如下操作界面。(此处仅以v0.8.4hbupdate升级工具和20210601系统镜像disk_xj3_secure_ut_emmc202106011037.img为例,其他版本升级工具和镜像操作方式类似)
+
+.. image:: ./xj3_soc_images/fastboot_upgrade.png
+
+1. **产品类型**： 可以选择产品类型下支持的产品，对于 X3 生态开发板(xj3_sdb)，请选择 XJ3-key1
+2. **产品名称**： 可以选择开发板的产品名称，对于 X3 生态开发板(xj3_sdb)，请选择 xj3_sdb
+3. **下载模式**： 支持 ”ota”、”uboot”、”uart” 三种模式。
+4. **下载方式**： 支持 ”fastboot”、“tftp” 两种方式，配合下载模式使用。
+5. **内存类型**： xj3_sdb 生态板默认为 samsung 颗粒，此处可不用选择。
+6. **升级后检查**： 此选项只适用于 “uboot” 和 “uart” 两种 “下载模式”。如果勾选此处，将会在升级结束后自动重启开发板，若能正常进入 X3 端 Linux shell 则判定为升级成功。如果不勾选则升级完成后不对开发板做任何操作，需由用户自行重启检查
+7. **显示串口输出**： 勾选后，板子的串口输出内容会显示在 “升级信息” 中，方便 debug
+8. **板卡配置**： 包括开发板 IP 地址，网关地址，MAC 地址和子网掩码，在升级过程中会下发到板卡中，需要与宿主机里配置的 IP 地址保持在同一个网段(IP 地址前三段一致)
+9. **PC配置**： 包括串口和 PC IP 地址
+10. **镜像文件**： 选择 .img 文件，注意：路径和文件名不能包含中文、空格
+
+.. warning:: 
+	1. 升级工具串口默认波特率为 921600，开发板的 DIP 开关需要调整为 921600 模式。
+   
+	2. 升级工具的解压路径和镜像文件的存储路径不能包含中文字符或空格。
+   
+	3. 串口不能重复打开，否则点击 “开始升级” 后会提示错误，ubuntu 系统下可能存在串口能重复打开的情况，但是依旧会导致下载失效。
+
+	4. 升级工具要求强制开启 tftp 服务，若工具不能申请到 69 号端口，软件将在报错后关闭， 此时需要检查系统本身是否有其他应用打开 tftp 服务，或系统是否自带 tftp 服务，或者是否多次打开下载工具。
+
+	5. 多数升级情况需要网络，请确定设备 IP 和宿主机 IP 保持在同一网段，网段内不能有重复 IP，且两者的 IP&掩码 相同。
+
+	6. 升级工具对设备进行升级时，不会对 userdata 分区进行升级，以保护用户数据不被覆盖。
+
+	7. 镜像烧录后,默认只有/app和/userdata目录有写入权限, 若希望所有分区和目录都可以写入可以执行: ``mount -o remount,rw /`` 获取写入权限.
+
+	8. hbupdate菜单栏的产品类型菜单中，XJ3-normal适用于非加密(non-secure)镜像的烧录。
+   
+
+3. 升级方式
+----------------
+
+芯片镜像升级共支持 **Uboot升级方法——网口, Uboot升级方法——USB, UART升级方法, OTA升级方式** 四种方式，
+其中开发板系统可用的情况下，优先推荐选择Uboot升级方法——网口，Uboot升级方法——USB以及OTA三种升级方式；如果开发版系统不可用，你可以选择UART对开发板进行系统恢复和升级。
+
+3.1 Uboot升级方法——网口
+++++++++++++++++++++++++++++++++++++
+
+网口 Uboot 升级方法是指开发板可以正常启动进入系统的状态下，工具通过串口下发重启命令并驻留在 Uboot 中，然后通过网口完成镜像文件的传输和升级。
+
+由于工具的网络传输依赖 tftp 服务，用户需要保证 PC 环境中没有其他软件占用 tftp 服务，且开发板和 PC 应处于同一网段内（前三段 IP 地址一致）。
+
+升级工具需要按照下图标识进行配置：
+
+1.	产品类型，选择 XJ3-key1
+2.	产品名称，选择 xj3_sdb 生态开发板
+3.	下载模式，选择 uboot
+4.	下载方式，选择 tftp
+5.	开发板 IP 地址，升级时由工具下发配置，前三段 IP 地址一致
+6.	开发板网关地址，升级时由工具下发配置
+7.	PC 机 IP 地址，应保证能够 ping 通开发板 IP，前三段 IP 地址一致
+8.	开发板串口，默认波特率 921600
+9.	镜像文件，选择 .img 文件，路径和文件名不能包含中文、空格
+
+.. image:: ./xj3_soc_images/uboot_upgrade.png
+
+3.2 Uboot升级方法——USB
+++++++++++++++++++++++++++++++++++++
+
+USB Uboot 升级方法是指开发板可以正常启动进入系统的状态下，工具通过串口下发重启命令并驻留在 Uboot 中，然后使用 USB fastboot 完成镜像文件的传输和升级。
+
+其中 fastboot 传输需要 PC 驱动的支持，用户需要保证 PC 安装 fastboot 驱动，并能够正常识别 X3 fastboot  口。
+
+升级工具需要按照下图标识进行配置：
+
+.. note::
+  注意，升级工具界面设计随版本不同有所变化，此处仅为示例。
+
+1.	产品类型，选择 XJ3-key1
+2.	产品名称，选择 xj3_sdb 生态开发板
+3.	下载模式，选择 uboot
+4.	下载方式，选择 fastboot
+5.	镜像文件，选择 .img 文件，路径和文件名不能包含中文、空格
+6.	开发板串口，默认波特率 921600
+7.	IP 地址配置，该模式下无需配置
+
+.. image:: ./xj3_soc_images/fastboot_upgrade.png
+
+3.3 UART 升级方法
+++++++++++++++++++++++++++++++++++++
+
+UART 升级方法是指工具在 X3 上电之前，通过串口发送 UART 启动指令，当 X3 上电检测到该指令后，会跳转进 UART 启动模式中，之后工具通过 UART 下发预置在工具中的 SPL、Uboot 镜像，当 X3 完成并跳转进 Uboot 中之后，才可以通过网口或 USB 口升级用户指定的镜像。
+
+当 X3SDB 开发板变砖或者空片时，需要通过 UART 升级方法进行修复升级。升级工具需要按照下图标识进行配置：
+
+1.	下载模式，选择 uart
+2.	内存类型，X3SDB 开发板为 samsung 颗粒，选择 lpddr4-samsung-sec
+
+.. image:: ./xj3_soc_images/uart_upgrade.png
+
+3.4 OTA升级方式
+++++++++++++++++++++++++++++++++++++
+
+OTA 升级方式是地平线在 X3平台开发的一套在线升级 demo 方案，可以实现基本的在线升级功能，该功能只会升级 uboot 之后的分区文件，包含 kernel、rootfs 等。
+
+使用 PlatformSDK 编译后，会生成相应的 OTA 包，路径位于 out/horizon_x3-release.64/target/deploy/ota/all_disk.zip。
+
+1.	产品类型，选择 XJ3-key1
+2.	产品名称，选择 xj3_sdb 生态开发板
+3.	下载模式，选择 ota
+4.	下载方式，选择 tftp
+5.	镜像文件，选择 all_disk.zip，路径和文件名不能包含中文、空格
+6.	开发板 IP 地址，需要与 PC 位于同一网段内
+7.	开发板串口，默认波特率 921600
+
+.. image:: ./xj3_soc_images/ota_upgrade.png

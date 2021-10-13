@@ -1,0 +1,345 @@
+开发环境搭建
+======================
+
+1. 开发包解析
+--------------------
+天工开物开发平台发布包的目录结构以及功能描述如下
+
+.. csv-table::
+ :header: "目录结构", "内容描述"
+ :widths: 35, 65
+
+ "/bsp", "系统软件预编译镜像和系统软件源码目录"
+ "/bsp/X3J3-Img-PL2.0-V1.6.0-20210207.tgz", "系统软件预编译镜像，支持快速生成各种开发板的系统固件文件"
+ "/bsp/X3J3-PlatformSDK-PL2.0-V1.6.0-20210207.tgz", "系统软件源码发布包，支持用户根据需求对系统进行裁剪或修改，并编译生成私有系统镜像"
+ "/tools", "系统固件刷机工具以及window串口驱动"
+ "/tools/0A_*.zip", "适配各种window系统硬件的串口驱动，可以逐个安装来进行验证与自己系统匹配关系"
+ "/tools/0B_hbupdate_*.tar.gz", "镜像刷机工具，兼容window，linux环境"
+ "/tools/0B_hbupdate_burn_secure-key1.zip", "编译生成secure安全系统镜像所需的key文件"
+ "/ddk", "应用开发包"
+ "/ddk/docker", "一体化docker镜像文件，内置浮点模型转换和嵌入式应用开发环境，推荐使用"
+ "/ddk/package", "应用开发包，包括需要安装在开发宿主机上的LIB库/工具，以及需要安装在开发板上的工具"
+ "/ddk/package/host", "安装在开发宿主机上的LIB库/工具，包括AI工具链开发环境和基础LIB库"
+ "/ddk/package/board", "安装在开发板上的工具"
+ "/ddk/samples", "配套样例，以源码方式交付，在/ddk/package环境安装以后，可以通过脚本完成编译和部署"
+ "/ddk/samples/ai_benchmark", "内置数十种模型，支持快速在地平线芯片上完成精度和性能评测"
+ "/ddk/samples/ai_toolchain", "AI工具链相关用户示例，包括模型转换，模型训练，以及嵌入式模型推理runtime使用"
+ "/ddk/samples/ai_express", "AI应用开发中间件用户示例，包括xstream，xproto以及其他相关组件使用demo"
+ "/ddk/samples/solution_zoo", "AI应用参考解决方案示例"
+ "/ddk/tools", "应用开发配套的工具，主要包括交叉编译环境，gdc调试工具，摄像头ISP调试和可视化工具"
+
+其中需要完成 **BSP系统软件开发环境** , **AI应用软件开发环境** 的搭建。
+
+2. 系统软件开发
+---------------------
+XJ3 芯片的系统为 ``嵌入式Linux`` ，固件采用预先编译好的镜像 ``X3J3-Img-PL2.0-${version}.tgz`` 和 PlatformSDK 源码 ``X3J3-PlatformSDK-PL2.0-${version}.tgz`` 两种方式进行发布。
+其中对于PlatformSDK源码发布包，支持用户根据自己的需求来对源码功能进行裁剪或修改，并编译生成自己私有的系统镜像。
+
+在PlatformSDK源码包中，我们已经自带交叉编译工具链，并配置好了编译脚本等参数，路径在 ``bsp/PlatformSDK/prebuilts/host``，用户只需要搭建好编译环境，即可快速完成系统镜像的源码编译。
+
+目前我们支持在Ubuntu18.04和Centos7两个系统下编译PlatformSDK。
+
+对于Ubuntu18.04，需要按照以下命令搭建编译环境:
+
+.. code-block:: shell
+
+  sudo apt install build-essential
+  sudo apt-get install make
+  sudo apt install cmake
+  sudo apt install bison
+  sudo apt install flex
+  sudo apt-get install python-numpy
+  sudo apt install android-tools-fsutils
+  sudo apt install mtd-utils
+  sudo apt install zlib1g-dev
+
+  
+对于Centos7 系统，需要按照如下命令搭建编译环境：
+
+.. code-block:: shell
+
+  yum install glib cmake gcc bison flex minicom python-pip
+  pip install numpy
+  yum install make_ext4fs-1.0.0-1.el7.x86_64.rpm
+  yum install zlib-devel
+  yum install mtd-utils-1.5.0-2.el6.nux.x86_64.rpm
+  
+
+环境配置后，采用如下指令进行编译：
+
+.. code-block:: shell
+
+  source ./build/envsetup.sh
+  lunch
+  ./build.sh
+
+编译完成会输出一个 ``PLATFORMSDK_OUT`` 目录，与预先编译好的镜像 ``X3J3-Img-PL2.0-${version}.tgz`` 压缩包解压后的目录结构一致，如下所示。
+
+.. code-block:: shell
+
+  PLATFORMSDK_OUT
+  ├── gen_disk.sh
+  ├── gen_ota.sh
+  ├── 0-emmc-2666-ut-gpt.conf
+  ├── 0-emmc-2666-ut-gpt-dual.conf
+  ├── app.img
+  ├── bl31.img
+  ├── ddr.img
+  ├── gpt_backup_dual.img
+  ├── gpt_backup.img
+  ├── gpt_main_dual.img
+  ├── gpt_main.img
+  ├── recovery.img
+  ├── sbl_secure.img
+  └── veeprom.img
+
+
+PLATFORMSDK_OUT 目录中包含了每个分区镜像及 ``gen_disk.sh`` 打包脚本，说明如下。
+
+.. code-block:: shell
+
+  脚本使用说明：
+  ./gen_disk.sh <-b board> [-s] [-u] [-o output_file]
+    –b 参数为打包镜像的版本，目前支持 xj3/xj3_ddr4 两种产品的镜像，且-b 参数必须填 写
+    -s 参数为产品是否为 security 镜像，烧写 efuse 的芯片镜像需要增加该参数
+    -u 参数为是否带 app 分区镜像，增加-u 参数，将会把 app.img 打包到镜像 app 分区，系统启动后自动加载
+    -o 参数为输出镜像名称，为配合下载工具使用，镜像名称需以”disk”为开头
+  示例如下:
+  build xj3 UT disk image: ./gen_disk.sh -b xj3 -u
+  build xj3 disk image: ./gen_disk.sh -b xj3
+  build xj3 secure disk image: ./gen_disk.sh -b xj3 -F -s secure
+  build xj3 secure disk image: ./gen_disk.sh -b xj3 -F -s secure –o disk_example.img
+  
+
+通过gen_disk.sh脚本可以生成最终系统升级固件镜像image文件。
+
+3. AI应用开发
+-------------------------------
+
+AI应用开发主要包括算法模型开发和应用软件开发两个部分，我们提供了Docker环境以及宿主机环境两种方式供你快速搭建系统开发环境。
+
+3.1 Docker开发环境
++++++++++++++++++++++
+
+在使用docker镜像之前，请先确认已经安装好docker的基础环境。地平线要求的Docker基础环境信息如下：
+
+- Docker（>=1.12 建议安装18.03.0-ce）, 安装手册 https://docs.docker.com/install/。
+- NVIDIA Docker（2.0.3），安装手册 NVIDIA/nvidia-docker。
+
+docker基础环境安装后，需要将无root权限用户加入到docker用户组中。参考命令如下：
+
+.. code-block:: shell
+  
+  sudo groupadd docker
+  sudo gpasswd -a ${USER} docker
+  sudo systemctl restart docker  # Centos7
+  # relogin
+
+然后就可以加载发布包中的系统镜像文件 ``/ddk/docker/horizon_ddk_docker_image_{version}.tar.gz`` ，命令如下：
+
+.. code-block:: shell
+  
+  docker load -i horizon_ddk_docker_image_{version}.tar.gz
+
+加载命令顺利执行完成后，您将得到启动docker需要的 ``{REPOSITORY}:{TAG}`` ，提示如下（注意对于不同的版本，版本号部分会所有差异）：
+
+.. code-block:: shell
+  
+  Loaded image: docker.hobot.cc/aitools/horizon_xj3_ddk:xj3_1.3.3
+
+此时你就可以使用该docker镜像进行AI模型以及应用软件开发。
+
+3.2 宿主机开发环境
++++++++++++++++++++++
+
+如果你不习惯基于docker进行开发，你可以在你的宿主机器上直接进行环境安装，地平线建议您选择的开发机应满足以下要求。
+
+- CPU：CPU I3以上或者同级别E3/E5的处理器
+- 内存：16G或以上级别
+- GPU：建议搭配一块1080ti或以上级别
+- 系统： Centos 7 、 Ubuntu 18/16 
+
+
+宿主机环境安装首先需要安装交叉编译工具链，请从 ``/ddk/tools`` 目录下获取
+
+.. code-block:: shell
+
+  /ddk/tools
+  ├── gcc_linaro_6.5.0_2018.12_x86_64_aarch64_linux_gnu.tar.xz
+
+建议将交叉编译器解压到系统 ``/opt`` 根目录下，安装后目录结构如下：
+
+.. code-block:: shell
+
+  work@work-server:~$ ll /opt/gcc-linaro-6.5.0-2018.12-x86_64_aarch64-linux-gnu
+  total 36
+  drwxr-xr-x 7 root root 4096 10月 15  2019 aarch64-linux-gnu
+  drwxr-xr-x 2 root root 4096 10月 15  2019 bin
+  -rw-r--r-- 1 root root 9489 10月 15  2019 gcc-linaro-6.5.0-2018.12-linux-manifest.txt
+  drwxr-xr-x 3 root root 4096 10月 15  2019 include
+  drwxr-xr-x 3 root root 4096 10月 15  2019 lib
+  drwxr-xr-x 3 root root 4096 10月 15  2019 libexec
+  drwxr-xr-x 8 root root 4096 10月 15  2019 share
+
+然后就可以继续完成DDK Package开发包的安装，参考 ``/ddk/package/host/`` 目录。
+
+.. code-block:: shell
+
+  /ddk/package/host/
+  ├── ai_toolchain
+  │   └── packages
+  │       ├── file_list.md
+  │       ├── hbdk-3.18.2-py3-none-linux_x86_64.whl
+  │       ├── hbdk_model_verifier-3.18.2-py3-none-linux_x86_64.whl
+  │       ├── horizon_nn-0.9.10-py3-none-any.whl
+  │       ├── install_ubuntu_deps.sh
+  │       ├── mxnet_horizon-1.5.1.1.1-py2.py3-none-manylinux1_x86_64.whl
+  │       └── x3_tc_ui-1.2.5-py3-none-any.whl
+  ├── host_package
+  │   ├── appsdk_1.6.0.tar.gz
+  │   ├── bpu_predict_1.5.1.tar.gz
+  │   ├── image_utils_3.0.0.tar.gz
+  │   ├── xproto_3.0.0.tar.gz
+  │   └── xstream_3.0.0.tar.gz
+  ├── install_ai_toolchain.sh
+  └── install_host_package.sh
+
+
+* 通过 ``install_ai_toolchain.sh`` 脚本，你可以一键完成ai_toolchain目录下面的各种python whl包的安装，它提供了配套命令行工具和python库包。
+* 通过 ``install_host_package.sh`` 脚本，你可以一键完成host_package目录下面的各种库/头文件，安装路径 ``${HOME}/.horizon`` 目录下，
+
+.. warning::
+  install_ai_toolchain.sh和install_host_package.sh脚本执行成功以后，会在~/.bashrc系统环境变量中添加Path等信息，
+  你需要重新启动打开一个新的terminal或者执行 ``source ~/.bashrc`` 来使当前terminal的配置生效。
+
+其中包括如下内容(假设同时安装了x3版本和j3版本)：
+
+.. code-block:: shell
+
+  /home/work/.horizon/
+  ├── aarch64
+  │   ├── j3
+  │   │   ├── appsdk
+  │   │   │   └── appuser
+  │   │   │       ├── include
+  │   │   │       └── lib
+  │   │   ├── appsdk_1.9.1.tar.gz  // 系统软件层面一些库文件/头文件
+  │   │   ├── dnn
+  │   │   │   ├── include
+  │   │   │   │   └── dnn
+  │   │   │   └── lib
+  │   │   │       ├── libdnn.so
+  │   │   │       ├── libhbrt_bernoulli_aarch64.so
+  │   │   │       └── libopencv_world.so.3.4
+  │   │   ├── dnn_0.5.2b.tar.gz
+  │   │   ├── hobotsdk
+  │   │   │   ├── include
+  │   │   │   │   └── hobot
+  │   │   │   └── lib
+  │   │   │       ├── libhobotsdk.a
+  │   │   │       └── libhobotthread.a
+  │   │   └── hobotsdk_1.9.13.tar.gz
+  │   └── x3
+  │       ├── appsdk
+  │       │   └── appuser
+  │       │       ├── include
+  │       │       └── lib
+  │       ├── appsdk_1.9.0.tar.gz // 系统软件层面一些库文件/头文件
+  │       ├── bpu_predict         // ai_toolchain bpu 预测库
+  │       │   ├── include
+  │       │   │   ├── bpu_err_code.h
+  │       │   │   ├── bpu_parse_utils_extension.h
+  │       │   │   ├── bpu_predict_extension.h
+  │       │   │   └── bpu_version.h
+  │       │   └── lib
+  │       │       ├── libbpu_predict.a
+  │       │       ├── libbpu_predict.so
+  │       │       └── libhbrt_bernoulli_aarch64.so
+  │       ├── bpu_predict_1.6.4.tar.gz
+  │       ├── image_utils          // ai_express image_utils图像处理增强库
+  │       │   ├── include
+  │       │   │   └── image_utils.h
+  │       │   └── lib
+  │       │       └── libimage_utils.so
+  │       ├── image_utils_1.1.8.tar.gz
+  │       ├── model_inference
+  │       │   ├── include
+  │       │   │   └── model_inference
+  │       │   └── lib
+  │       │       └── libmodel_inference.so
+  │       ├── model_inference_1.0.5.tar.gz
+  │       ├── model_inference_1.0.6.tar.gz
+  │       ├── rtsp_server
+  │       │   ├── include
+  │       │   │   └── rtsp_server
+  │       │   └── lib
+  │       │       └── librtsp_server.so
+  │       ├── rtsp_server_1.0.5.tar.gz
+  │       ├── rtsp_server_1.0.6.tar.gz
+  │       ├── video_source
+  │       │   ├── include
+  │       │   │   └── video_source_plugin
+  │       │   └── lib
+  │       │       └── libvideo_source_plugin.so
+  │       ├── video_source_1.0.5.tar.gz
+  │       ├── video_source_1.0.6.tar.gz
+  │       ├── xproto              // ai_express xproto应用开发框架
+  │       │   ├── include
+  │       │   │   ├── xproto
+  │       │   │   └── xstream
+  │       │   └── lib
+  │       │       └── libxproto.so
+  │       ├── xproto_1.1.8.tar.gz
+  │       ├── xstream             // ai_express xstream算法sdk开发框架
+  │       │   ├── include
+  │       │   │   └── xstream
+  │       │   └── lib
+  │       │       └── libxstream.so
+  │       └── xstream_1.1.8.tar.gz
+  └── x86_64
+      └── centos
+          └── gcc_4.8.5
+              ├── j3
+              │   ├── hobotsdk
+              │   └── hobotsdk_1.9.13.tar.gz
+              └── x3
+                  ├── bpu_predict
+                  ├── bpu_predict_1.6.4.tar.gz
+                  ├── xproto
+                  ├── xproto_1.1.8.tar.gz
+                  ├── xstream
+                  └── xstream_1.1.8.tar.gz
+
+其中 ``appsdk`` 内部即包括了系统软件相关头文件和库，应用APP可以依赖他们进行应用开发。关于这些库的使用，你可以参考/ddk/doc内部文档。
+
+
+最后你还需要通过脚本将开发板端的一些配套工具安装到开发板中，详细参考 ``/ddk/package/board/`` 目录.
+
+.. code-block:: shell
+
+  /ddk/package/host/
+  ├── ai_express_webservice_display
+  ├── hrt_bin_dump
+  ├── hrt_model_exec
+  └── install.sh
+
+通过 ``install.sh``脚本可以这些工具快速安装到开发板的 ``/userdata/.horizon`` 目录。关于这些工具的使用，你可以参考/ddk/doc内部文档。
+
+3.3 远程 GDB 环境
++++++++++++++++++++++
+
+板卡系统中已经内置了 gdbserver，在你确保你的开发机与开发板网络联通的情况下，你可以使用 gdbserver 来对你的应用程序进行远程 DEBUG。
+
+使用方式很简单：
+
+.. code-block:: shell
+
+  // 开发板上，使用 gdbserver 的方式来启动应用程序
+  gdbserver :8000 <myapp>
+
+  //物理机上，通过 gdb 来连接 server 进行调试。在 gdb 命令行中执行
+  target remote <板子 ip>:<端口>
+
+
+注意，你的应用程序交叉编译时加 -g 选项编译为可调试二进制文件。
+

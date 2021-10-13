@@ -1,0 +1,25 @@
+var classxproto_1_1_x_session_inner =
+[
+    [ "XSessionInner", "classxproto_1_1_x_session_inner.html#a03dde385287ce5aa19fa99884d511842", null ],
+    [ "~XSessionInner", "classxproto_1_1_x_session_inner.html#a6559769ca797ce8aa3381e1e4a7c587e", null ],
+    [ "AsMaster", "classxproto_1_1_x_session_inner.html#a4c6173eee028986c74d4b421233e35f1", null ],
+    [ "Close", "classxproto_1_1_x_session_inner.html#a91327c90dafd455a78b25f16d1f56b91", null ],
+    [ "ConnectTo", "classxproto_1_1_x_session_inner.html#ad3a502612d1625986a7af9b2346a0495", null ],
+    [ "Dispatch", "classxproto_1_1_x_session_inner.html#a073db777fd7c73dfb42dfe6de61d1840", null ],
+    [ "Info", "classxproto_1_1_x_session_inner.html#add516a58e312c8c1eada601a6be69f8c", null ],
+    [ "OnMessage", "classxproto_1_1_x_session_inner.html#a2242b681b1142c2902cb78c05e63d9e7", null ],
+    [ "RecvThread", "classxproto_1_1_x_session_inner.html#a6c89a68b0e5e1782118f586208087230", null ],
+    [ "RegisterMsg", "classxproto_1_1_x_session_inner.html#a021fe7f8128c6503e24c1f723a5aafb5", null ],
+    [ "Reset", "classxproto_1_1_x_session_inner.html#a166cb190d9cbbc49f8e0ccb09b6e7ed9", null ],
+    [ "SendMsgProc", "classxproto_1_1_x_session_inner.html#ac9655c241f6af3e1780516304beaabc8", null ],
+    [ "UnRegisterMsg", "classxproto_1_1_x_session_inner.html#a4a012f27c1b1ca1ace588e4285240674", null ],
+    [ "is_inited_", "classxproto_1_1_x_session_inner.html#aa9ac45f24730ccbe527b8cb618a2cbff", null ],
+    [ "recv_handle_", "classxproto_1_1_x_session_inner.html#ac624679e5fc51f0242b47030bc31cb1c", null ],
+    [ "send_handle_", "classxproto_1_1_x_session_inner.html#a5e770012ea9fb9d1201a2982c57d2c1b", null ],
+    [ "session_info_", "classxproto_1_1_x_session_inner.html#a42180a6ecd8ac2c4b468535d710002b4", null ],
+    [ "session_version_", "classxproto_1_1_x_session_inner.html#aa12a352ce124d42803671af734b3693e", null ],
+    [ "socket_", "classxproto_1_1_x_session_inner.html#a5f47c5f4402f2237102b1ae23d45f94c", null ],
+    [ "stop_", "classxproto_1_1_x_session_inner.html#a36af47a467d51b1bab6a5185e76cecdd", null ],
+    [ "sub_msg_types_", "classxproto_1_1_x_session_inner.html#ae3a63a2974053c085a4c7dfbdc2b6f6f", null ],
+    [ "sub_msg_types_mtx_", "classxproto_1_1_x_session_inner.html#a16c6e6b023b7e7e935fb0eae0f402104", null ]
+];

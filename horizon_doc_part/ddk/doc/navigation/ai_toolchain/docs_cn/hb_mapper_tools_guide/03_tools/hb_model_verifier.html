@@ -1,0 +1,303 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>2.6. hb_model_verifier 工具 &mdash; hb_mapper_tools_guide v1.6.6 文档</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/custom-style.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/translations.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="2.7. hb_model_modifier 工具" href="hb_model_modifier.html" />
+    <link rel="prev" title="2.5. hb_pack 工具" href="hb_pack.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> hb_mapper_tools_guide
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="在文档中搜索" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../01_model_conversion_details.html">1. 模型转换过程详解</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../02_tools.html">2. 工具详细介绍</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="hb_mapper.html">2.1. <code class="docutils literal notranslate"><span class="pre">hb_mapper</span></code> 工具</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hb_perf.html">2.2. <code class="docutils literal notranslate"><span class="pre">hb_perf</span></code> 工具</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vec_diff.html">2.3. <code class="docutils literal notranslate"><span class="pre">vec_diff</span></code> 工具</a></li>
+<li class="toctree-l2"><a class="reference internal" href="model_info.html">2.4. <code class="docutils literal notranslate"><span class="pre">hb_model_info</span></code> 工具</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hb_pack.html">2.5. <code class="docutils literal notranslate"><span class="pre">hb_pack</span></code> 工具</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">2.6. <code class="docutils literal notranslate"><span class="pre">hb_model_verifier</span></code> 工具</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">2.6.1. 使用方式</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">2.6.2. 命令行参数</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">2.6.3. <code class="docutils literal notranslate"><span class="pre">hb_model_verifier</span></code> 配置文件</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">2.6.4. 输出内容解析</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="hb_model_modifier.html">2.7. <code class="docutils literal notranslate"><span class="pre">hb_model_modifier</span></code> 工具</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hb_custom_op.html">2.8. <code class="docutils literal notranslate"><span class="pre">hb_custom_op</span></code> 工具</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">hb_mapper_tools_guide</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../02_tools.html"><span class="section-number">2. </span>工具详细介绍</a> &raquo;</li>
+        
+      <li><span class="section-number">2.6. </span><code class="docutils literal notranslate"><span class="pre">hb_model_verifier</span></code> 工具</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/03_tools/hb_model_verifier.rst.txt" rel="nofollow"> 查看页面源码</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="hb-model-verifier">
+<h1><span class="section-number">2.6. </span><code class="docutils literal notranslate"><span class="pre">hb_model_verifier</span></code> 工具<a class="headerlink" href="#hb-model-verifier" title="永久链接至标题">¶</a></h1>
+<p><code class="docutils literal notranslate"><span class="pre">hb_model_verifier</span></code> 工具是用于对指定的定点模型和runtime模型进行结果验证的工具。 该工具会随机生成图片, 进行定点模型推理, runtime模型在模拟器上的推理, runtime模型在板端的推理(如果给定ip可以ping通), 并对其结果进行两两比较, 给出是否通过的结论。</p>
+<div class="section" id="id1">
+<h2><span class="section-number">2.6.1. </span>使用方式<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>hb_model_verifier -c <span class="si">${</span><span class="nv">config_file</span><span class="si">}</span> <span class="se">\</span>
+                  -a <span class="si">${</span><span class="nv">board_ip</span><span class="si">}</span> <span class="se">\</span>
+                  -i <span class="si">${</span><span class="nv">input_img</span><span class="si">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id2">
+<h2><span class="section-number">2.6.2. </span>命令行参数<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<dl class="py data">
+<dt class="sig sig-object py" id="hb_model_verifier">
+<span id="hb_model_verifier的命令行参数"></span><span class="sig-name descname"><span class="pre">hb_model_verifier的命令行参数</span></span><a class="headerlink" href="#hb_model_verifier" title="永久链接至目标">¶</a></dt>
+<dd><dl class="simple">
+<dt>--cfg-file, -c</dt><dd><p><code class="docutils literal notranslate"><span class="pre">hb_model_verifier</span></code> 配置文件名称。</p>
+</dd>
+<dt>--arm-board-ip, -a</dt><dd><p>上板测试使用的arm board ip地址。</p>
+</dd>
+<dt>--input-img, -i</dt><dd><p>推理测试时使用的图片。若不指定则会自动生成随机图像做输入。</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="id3">
+<h2><span class="section-number">2.6.3. </span><code class="docutils literal notranslate"><span class="pre">hb_model_verifier</span></code> 配置文件<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># 定点onnx 模型文件</span>
+<span class="nt">onnx_model</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">quantized_model.onnx</span>
+
+<span class="c1"># hybrid.bin 模型的路径</span>
+<span class="nt">hybrid_model</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">hybrid_model.bin</span>
+
+<span class="c1"># 模型输入大小</span>
+<span class="nt">input_shape</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1x224x224x3</span>
+
+<span class="c1"># 模型上板时的输入layout</span>
+<span class="nt">input_layout</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">NHWC</span>
+
+<span class="c1"># 模型上板时的输入类型 (yuv444/rgb(NCHW)/feature)</span>
+<span class="nt">input_type_rt</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">yuv444</span>
+
+<span class="c1"># 模型训练时的输入layout</span>
+<span class="nt">input_layout_train</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">NCHW</span>
+
+<span class="c1"># 结果对比精度精确位数</span>
+<span class="nt">compare_digits</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5</span>
+
+<span class="c1"># 输出结果的路径, 请勿使用当前工作路径! 否则会被清空</span>
+<span class="nt">output_dir</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">model_verifier_out</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id4">
+<h2><span class="section-number">2.6.4. </span>输出内容解析<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h2>
+<p>结果对比最终会在终端展示, 工具会对比ONNX模型运行结果, 模拟器运行及上板结果的两两对比情况, 若无问题应显示如下:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>Onnx and Sim result Strict check PASSED
+
+Onnx and Arm result Strict check PASSED
+
+Sim and Arm result Strict check PASSED
+</pre></div>
+</div>
+<div class="admonition attention">
+<p class="admonition-title">注意</p>
+<p>注意， <code class="docutils literal notranslate"><span class="pre">hb_model_verifier</span></code> 不支持对已打包的*.bin模型进行验证，否则工作台将产生以下提示：</p>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ERROR pack model is not supported
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="hb_model_modifier.html" class="btn btn-neutral float-right" title="2.7. hb_model_modifier 工具" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="hb_pack.html" class="btn btn-neutral float-left" title="2.5. hb_pack 工具" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; 版权所有 2021, Horizon Robotics.
+
+    </p>
+  </div>
+    
+    
+    
+    利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用了 
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    
+    由 <a href="https://readthedocs.org">Read the Docs</a>开发. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

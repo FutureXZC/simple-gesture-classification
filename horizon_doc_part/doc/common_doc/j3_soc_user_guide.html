@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html >
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+      <title>征程J3芯片概述</title>
+    
+      <link rel="stylesheet" href="../_static/pygments.css">
+      <!-- bundled in js (rollup iife) -->
+      <!-- <link rel="stylesheet" href="../_static/theme.css"> -->
+      <link rel="stylesheet" href="../_static/sphinx_press_theme.css">
+      
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+
+      <!-- sphinx script_files -->
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+
+      
+      <!-- bundled in js (rollup iife) -->
+      <!-- <script src="../_static/theme-vendors.js"></script> -->
+      <script src="../_static/theme.js" defer></script>
+    
+  <link rel="index" title="Index" href="../genindex.html" />
+  <link rel="search" title="Search" href="../search.html" /> 
+  </head>
+
+  <body>
+    <div id="app" class="theme-container" :class="pageClasses"><navbar @toggle-sidebar="toggleSidebar">
+  <router-link to="../index.html" class="home-link">
+    
+      <span class="site-name">地平线 X3J3 芯片开发手册</span>
+    
+  </router-link>
+
+  <div class="links">
+    <navlinks class="can-hide">
+
+  
+    <div class="nav-item">
+      <a href="https://horizon.ai/"
+        class="nav-link external">
+          地平线官网 <outboundlink></outboundlink>
+      </a>
+    </div>
+  
+    <div class="nav-item">
+      <a href="https://developer.horizon.ai/"
+        class="nav-link external">
+          社区问题求助 <outboundlink></outboundlink>
+      </a>
+    </div>
+  
+    <div class="nav-item">
+      <a href="https://wenjuan.feishu.cn/m?t=srSlsnSEmgsi-ambr"
+        class="nav-link external">
+          产品使用反馈 <outboundlink></outboundlink>
+      </a>
+    </div>
+  
+
+    </navlinks>
+  </div>
+</navbar>
+
+      
+      <div class="sidebar-mask" @click="toggleSidebar(false)">
+      </div>
+        <sidebar @toggle-sidebar="toggleSidebar">
+          
+          <navlinks>
+            
+
+  
+    <div class="nav-item">
+      <a href="https://horizon.ai/"
+        class="nav-link external">
+          地平线官网 <outboundlink></outboundlink>
+      </a>
+    </div>
+  
+    <div class="nav-item">
+      <a href="https://developer.horizon.ai/"
+        class="nav-link external">
+          社区问题求助 <outboundlink></outboundlink>
+      </a>
+    </div>
+  
+    <div class="nav-item">
+      <a href="https://wenjuan.feishu.cn/m?t=srSlsnSEmgsi-ambr"
+        class="nav-link external">
+          产品使用反馈 <outboundlink></outboundlink>
+      </a>
+    </div>
+  
+
+            
+          </navlinks><div class="sidebar-links" role="navigation" aria-label="main navigation">
+  
+    <div class="sidebar-group">
+      <p class="caption">
+        <span class="caption-text"><a href="../index.html#x3j3">整体概述</a></span>
+      </p>
+      <ul class="">
+        
+      </ul>
+    </div>
+  
+    <div class="sidebar-group">
+      <p class="caption">
+        <span class="caption-text"><a href="../index.html#x3j3">芯片介绍</a></span>
+      </p>
+      <ul class="">
+        
+          <li class="toctree-l1 "><a href="x3_soc_user_guide.html" class="reference internal ">旭日X3芯片概述</a>
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 "><a href="xj3_soc_contrast.html" class="reference internal ">X3与J3差异描述</a>
+
+            
+          </li>
+
+        
+      </ul>
+    </div>
+  
+    <div class="sidebar-group">
+      <p class="caption">
+        <span class="caption-text"><a href="../index.html#x3j3">开发套件介绍</a></span>
+      </p>
+      <ul class="">
+        
+          <li class="toctree-l1 "><a href="xj3_board_overview.html" class="reference internal ">开发套件概述</a>
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 "><a href="x3_sdb_overview.html" class="reference internal ">X3 SDB生态套件</a>
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 "><a href="xj3_board_update_guide.html" class="reference internal ">固件升级手册</a>
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 "><a href="xj3_board_command.html" class="reference internal ">常见系统命令</a>
+
+            
+          </li>
+
+        
+      </ul>
+    </div>
+  
+    <div class="sidebar-group">
+      <p class="caption">
+        <span class="caption-text"><a href="../index.html#x3j3">天工开物开发平台</a></span>
+      </p>
+      <ul class="">
+        
+          <li class="toctree-l1 "><a href="../source_doc/x3_ddk_user_guide.html" class="reference internal ">开发平台概述</a>
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 "><a href="xj3_ddk_quick_start.html" class="reference internal ">开发环境搭建</a>
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 "><a href="xj3_ddk_sample.html" class="reference internal ">应用开发示例</a>
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 "><a href="../source_doc/x3_ddk_docs.html" class="reference internal ">附录：开发手册</a>
+
+            
+          </li>
+
+        
+      </ul>
+    </div>
+  
+    <div class="sidebar-group">
+      <p class="caption">
+        <span class="caption-text"><a href="../index.html#x3j3">其他</a></span>
+      </p>
+      <ul class="">
+        
+          <li class="toctree-l1 "><a href="other_sources.html" class="reference internal ">社区资源索引</a>
+
+            
+          </li>
+
+        
+      </ul>
+    </div>
+  
+</div>
+        </sidebar>
+
+      <page>
+          <div class="body-header" role="navigation" aria-label="navigation">
+  
+  <ul class="breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+    
+    <li>征程J3芯片概述</li>
+  </ul>
+  
+
+  <ul class="page-nav">
+</ul>
+  
+</div>
+<hr>
+          <div class="content" role="main" v-pre>
+            
+  <div class="section" id="j3">
+<h1>征程J3芯片概述<a class="headerlink" href="#j3" title="Permalink to this headline">¶</a></h1>
+<p>征程Journey3（简称 J3）是地平线在2020年推出的低功耗、高性能AI处理器，面向L2/L3级别的自动驾驶场景和座舱场景，用于构建周视感知，环视感知以及座舱感知等车载场景。</p>
+<a class="reference internal image-reference" href="../_images/horizon_j_soc.png"><img alt="../_images/horizon_j_soc.png" class="align-center" src="../_images/horizon_j_soc.png" style="width: 1182.0px; height: 598.0px;" /></a>
+<p>J3芯片与X3M芯片SOC架构基本类似，属于同代芯片，内置了双核地平线BPU,  四核Cortex A53，采用 TSMC 16nm FFC工艺以及15x15mm, FCBGA封装。</p>
+<p>但是J3芯片相比X3芯片，它满足 <strong>AEC-Q100 Grade 2车规级</strong> 要求，提供了等效算5 TOPS，典型功耗2.5W。</p>
+<img alt="../_images/horizon_j_bpu.png" class="align-center" src="../_images/horizon_j_bpu.png" />
+<p>J3芯片在产品设计上，特别是BPU AI加速核的设计上，针对自动驾驶场景的”检测精度要求高”,”场景复杂多变”,”稳定性要求”等需求进行重点考虑，并注重真实AI计算能力输出，
+在DDR带宽与BPU MAC利用率优化并重，采用软硬协同地优化方式满足低功耗、高性能场景的需求。</p>
+<p>下图是J3与其他芯片， 在图像分类（ImageNet）任务下 MAPS（精度保证下平均处理速度）性能数据对比，</p>
+<img alt="../_images/horizon_j3_maps.png" class="align-center" src="../_images/horizon_j3_maps.png" />
+<p>J3在同等功耗情况下，可以获取得到非常高的AI计算能力输出。</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>MAPS (Mean Accuracy-guaranteed Processing Speed)是地平线对外公开的用于评估芯片的AI真实性能的一种新方法。
+它针对应用场景的特点，在精度有保障的前提下，包容所有与算法相关的选择，评估芯片对数据的平均处理速度。</p>
+<p>MAPS聚焦“快”和“准”两个关键评测维度，即在精度有保障范围内的平均处理速度，该评估方式旨在使用户能够通过可视化的图表感知AI芯片真实算力。
+其公式为：MAPS = 所围面积 /（最高精度-最低精度)</p>
+<p>你可以参考地平线官网获取Maps详细解释：<a class="reference external" href="https://www.horizon.ai/technology.html">https://www.horizon.ai/technology.html</a></p>
+</div>
+</div>
+
+
+          </div>
+          <div class="page-nav">
+            <div class="inner"><ul class="page-nav">
+</ul><div class="footer" role="contentinfo">
+      &#169; Copyright 2021, Horizon Robotics.
+</div>
+            </div>
+          </div>
+      </page>
+    </div>
+    
+    
+  </body>
+</html>

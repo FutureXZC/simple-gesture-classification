@@ -1,0 +1,21 @@
+3.3.0
+  -  fix some bugs
+  -  update hostpackage
+3.1.8
+  -  fix bug: avoid memory leaks
+3.1.7
+  - add UvcPlugin and UacPlugin
+3.1.6
+  - update set hdmi command
+3.1.5
+  - support imx586 sensor
+3.1.3
+  - fix bug for uvc
+3.1.2
+  - transfer fastrrcnn_method to infer_method
+  - optimize workflow config for SmartLegibleMessage targets
+3.1.1
+  - Adapt to host_package directory structure
+3.1.0
+  - update video_source_plugin: use the version from ai_express_component
+  - add rtsp_server_plugin: support transfer bitstream and smart result by rtsp

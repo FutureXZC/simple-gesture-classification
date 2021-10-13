@@ -1,0 +1,512 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>4. 应用开发 &mdash; horizon_ai_toolchain_user_guide v1.6.6 文档</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/custom-style.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/translations.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="next" title="5. 自定义算子开发" href="chapter_5_custom_op_development.html" />
+    <link rel="prev" title="3. 模型转换" href="chapter_3_model_conversion.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> horizon_ai_toolchain_user_guide
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="在文档中搜索" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">AI工具链:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="chapter_1_introduction.html">1. 产品介绍</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter_2_prerequisites.html">2. 环境部署</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter_3_model_conversion.html">3. 模型转换</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">4. 应用开发</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id2">4.1. 简介</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#create-your-project">4.2. 工程创建</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#engineer-implementation">4.3. 工程实现</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#compile-and-run">4.4. 工程编译与运行</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id6">4.5. 多模型控制策略</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#preemption">4.5.1. 模型优先级控制</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id8">4.6. 应用调优建议</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id9">4.7. 常见问题</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#nv12bgr">4.7.1. 如何将摄像头输出的NV12图片转换为BGR等格式？</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bpucache">4.7.2. 如何理解BPU内存Cache</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bpu">4.7.3. 理解BPU内存中的物理地址和虚拟地址</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="chapter_5_custom_op_development.html">5. 自定义算子开发</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter_6_FAQs.html">6. 常见问题</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter_7_appendix.html">7. 附录</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">horizon_ai_toolchain_user_guide</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li><span class="section-number">4. </span>应用开发</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/chapter_4_application_development.rst.txt" rel="nofollow"> 查看页面源码</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="id1">
+<h1><span class="section-number">4. </span>应用开发<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
+<div class="section" id="id2">
+<h2><span class="section-number">4.1. </span>简介<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<p>本章节介绍了在地平线平台进行应用开发，将转换得到的模型部署运行起来，需要您注意的相关注意事项在此章节也会介绍。</p>
+<div class="admonition attention">
+<p class="admonition-title">注意</p>
+<p>在应用开发前请，请确保您已经通过 <a class="reference internal" href="chapter_2_prerequisites.html"><span class="doc">环境部署</span></a> 部分的介绍完成了开发环境的准备。</p>
+</div>
+<p>最简易的开发过程包括工程创建、工程实现、工程编译与运行三个阶段。
+考虑到实际业务场景开发的较复杂需求，对于常用的多模型控制概念和应用调优建议也都提供了一些说明。</p>
+</div>
+<div class="section" id="create-your-project">
+<span id="id3"></span><h2><span class="section-number">4.2. </span>工程创建<a class="headerlink" href="#create-your-project" title="永久链接至标题">¶</a></h2>
+<p>地平线推荐使用cmake进行应用工程管理，前文介绍的环境部署部分也已经完成了cmake安装。
+在阅读本节内容前，我们希望您已经了解cmake的使用。</p>
+<p>地平线开发库提供了arm的依赖环境和板端应用程序。我们提供的工程依赖信息如下：</p>
+<ul class="simple">
+<li><p>地平线评测库libdnn.so，路径：<cite>~/.horizon/aarch64/j3/dnn/lib</cite>。</p></li>
+<li><p>地平线编译器依赖 libhbrt_bernoulli_aarch64.so，路径：<cite>~/.horizon/aarch64/j3/dnn/lib</cite>。</p></li>
+<li><p>地平线 xj3 芯片系统依赖，路径：<cite>~/.horizon/aarch64/j3/appsdk/appuser/</cite>。</p></li>
+<li><p>c编译器 aarch64-linux-gnu-gcc。</p></li>
+<li><p>c++编译器 aarch64-linux-gnu-g++。</p></li>
+</ul>
+<p>创建一个工程用户需要编写CMakeLists.txt文件。
+脚本中定义了编译工具路径，CMakeLists.txt文件中定义了一些编译选项，以及依赖库、头文件的路径。参考如下：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cmake_minimum_required<span class="o">(</span>VERSION <span class="m">2</span>.8<span class="o">)</span>
+
+project<span class="o">(</span>your_project_name<span class="o">)</span>
+
+set<span class="o">(</span>CMAKE_CXX_FLAGS <span class="s2">&quot;</span><span class="si">${</span><span class="nv">CMAKE_CXX_FLAGS</span><span class="si">}</span><span class="s2"> -std=c++11&quot;</span><span class="o">)</span>
+
+set<span class="o">(</span>CMAKE_CXX_FLAGS_DEBUG <span class="s2">&quot; -Wall -Werror -g -O0 &quot;</span><span class="o">)</span>
+set<span class="o">(</span>CMAKE_C_FLAGS_DEBUG <span class="s2">&quot; -Wall -Werror -g -O0 &quot;</span><span class="o">)</span>
+set<span class="o">(</span>CMAKE_CXX_FLAGS_RELEASE <span class="s2">&quot; -Wall -Werror -O3 &quot;</span><span class="o">)</span>
+set<span class="o">(</span>CMAKE_C_FLAGS_RELEASE <span class="s2">&quot; -Wall -Werror -O3 &quot;</span><span class="o">)</span>
+
+<span class="k">if</span> <span class="o">(</span>NOT CMAKE_BUILD_TYPE<span class="o">)</span>
+    set<span class="o">(</span>CMAKE_BUILD_TYPE Release<span class="o">)</span>
+endif <span class="o">()</span>
+
+message<span class="o">(</span>STATUS <span class="s2">&quot;Build type: </span><span class="si">${</span><span class="nv">CMAKE_BUILD_TYPE</span><span class="si">}</span><span class="s2">&quot;</span><span class="o">)</span>
+
+<span class="c1"># define dnn lib path</span>
+set<span class="o">(</span>DNN_PATH <span class="s2">&quot;~/.horizon/aarch64/j3/dnn/&quot;</span><span class="o">)</span>
+set<span class="o">(</span>APPSDK_PATH <span class="s2">&quot;~/.horizon/aarch64/j3/appsdk/appuser/&quot;</span><span class="o">)</span>
+
+set<span class="o">(</span>DNN_LIB_PATH <span class="si">${</span><span class="nv">DNN_PATH</span><span class="si">}</span>/lib<span class="o">)</span>
+set<span class="o">(</span>APPSDK_LIB_PATH <span class="si">${</span><span class="nv">APPSDK_PATH</span><span class="si">}</span>/lib/hbbpu<span class="o">)</span>
+set<span class="o">(</span>BPU_libs dnn cnn_intf hbrt_bernoulli_aarch64<span class="o">)</span>
+
+include_directories<span class="o">(</span><span class="si">${</span><span class="nv">DNN_PATH</span><span class="si">}</span>/include
+                    <span class="si">${</span><span class="nv">APPSDK_PATH</span><span class="si">}</span>/include<span class="o">)</span>
+link_directories<span class="o">(</span><span class="si">${</span><span class="nv">DNN_LIB_PATH</span><span class="si">}</span>
+                <span class="si">${</span><span class="nv">APPSDK_PATH</span><span class="si">}</span>/lib/hbbpu
+                <span class="si">${</span><span class="nv">APPSDK_PATH</span><span class="si">}</span>/lib<span class="o">)</span>
+
+add_executable<span class="o">(</span>user_app main.cc<span class="o">)</span>
+target_link_libraries<span class="o">(</span>user_app
+                      <span class="si">${</span><span class="nv">BPU_libs</span><span class="si">}</span>
+                      pthread
+                      rt
+                      dl<span class="o">)</span>
+</pre></div>
+</div>
+<p>注意在以上示例中，我们没有指定编译器位置，会在配合工程编译阶段补充编译器指定，请参考 <strong>工程编译与运行</strong> 小节部分的介绍。</p>
+</div>
+<div class="section" id="engineer-implementation">
+<span id="id4"></span><h2><span class="section-number">4.3. </span>工程实现<a class="headerlink" href="#engineer-implementation" title="永久链接至标题">¶</a></h2>
+<p>工程实现主要介绍如何将前文模型转换得到的bin模型在地平线平台运行起来。
+最简单的步骤应该包括模型加载、准备输入数据、准备输出内存、推理和结果解析，以下是一份简单的加载部署模型参考代码：</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
+
+<span class="cp">#include</span> <span class="cpf">&quot;dnn/hb_dnn.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;dnn/hb_sys.h&quot;</span><span class="cp"></span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span><span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// 第一步加载模型</span>
+  <span class="n">hbPackedDNNHandle_t</span> <span class="n">packed_dnn_handle</span><span class="p">;</span>
+  <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">model_file_name</span><span class="o">=</span> <span class="s">&quot;./mobilenetv1.bin&quot;</span><span class="p">;</span>
+  <span class="n">hbDNNInitializeFromFiles</span><span class="p">(</span><span class="o">&amp;</span><span class="n">packed_dnn_handle</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">model_file_name</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+
+  <span class="c1">// 第二步获取模型名称</span>
+  <span class="k">const</span> <span class="kt">char</span> <span class="o">**</span><span class="n">model_name_list</span><span class="p">;</span>
+  <span class="kt">int</span> <span class="n">model_count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="n">hbDNNGetModelNameList</span><span class="p">(</span><span class="o">&amp;</span><span class="n">model_name_list</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">model_count</span><span class="p">,</span> <span class="n">packed_dnn_handle</span><span class="p">);</span>
+
+  <span class="c1">// 第三步获取dnn_handle</span>
+  <span class="n">hbDNNHandle_t</span> <span class="n">dnn_handle</span><span class="p">;</span>
+  <span class="n">hbDNNGetModelHandle</span><span class="p">(</span><span class="o">&amp;</span><span class="n">dnn_handle</span><span class="p">,</span> <span class="n">packed_dnn_handle</span><span class="p">,</span> <span class="n">model_name_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+
+  <span class="c1">// 第四步准备输入数据</span>
+  <span class="n">hbDNNTensor</span> <span class="n">input</span><span class="p">;</span>
+  <span class="n">hbDNNTensorProperties</span> <span class="n">input_properties</span><span class="p">;</span>
+  <span class="n">hbDNNGetInputTensorProperties</span><span class="p">(</span><span class="o">&amp;</span><span class="n">input_properties</span><span class="p">,</span> <span class="n">dnn_handle</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+  <span class="n">input</span><span class="p">.</span><span class="n">properties</span> <span class="o">=</span> <span class="n">input_properties</span><span class="p">;</span>
+  <span class="k">auto</span> <span class="o">&amp;</span><span class="n">mem</span> <span class="o">=</span> <span class="n">input</span><span class="p">.</span><span class="n">sysMem</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+
+  <span class="kt">int</span> <span class="n">yuv_length</span> <span class="o">=</span> <span class="mi">224</span> <span class="o">*</span> <span class="mi">224</span> <span class="o">*</span> <span class="mi">3</span><span class="p">;</span>
+  <span class="n">hbSysAllocCachedMem</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mem</span><span class="p">,</span> <span class="n">yuv_length</span><span class="p">);</span>
+  <span class="c1">//memcpy(mem.virAddr, yuv_data, yuv_length);</span>
+  <span class="c1">//hbSysFlushMem(&amp;mem, HB_SYS_MEM_CACHE_CLEAN);</span>
+
+  <span class="c1">// 第五步准备模型输出数据的空间</span>
+  <span class="kt">int</span> <span class="n">output_count</span><span class="p">;</span>
+  <span class="n">hbDNNGetOutputCount</span><span class="p">(</span><span class="o">&amp;</span><span class="n">output_count</span><span class="p">,</span> <span class="n">dnn_handle</span><span class="p">);</span>
+  <span class="n">hbDNNTensor</span> <span class="o">*</span><span class="n">output</span> <span class="o">=</span> <span class="k">new</span> <span class="n">hbDNNTensor</span><span class="p">[</span><span class="n">output_count</span><span class="p">];</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">output_count</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">hbDNNTensorProperties</span> <span class="o">&amp;</span><span class="n">output_properties</span> <span class="o">=</span> <span class="n">output</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">properties</span><span class="p">;</span>
+  <span class="n">hbDNNGetOutputTensorProperties</span><span class="p">(</span><span class="o">&amp;</span><span class="n">output_properties</span><span class="p">,</span> <span class="n">dnn_handle</span><span class="p">,</span> <span class="n">i</span><span class="p">);</span>
+
+  <span class="c1">// 获取模型输出尺寸</span>
+  <span class="kt">int</span> <span class="n">out_aligned_size</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">output_properties</span><span class="p">.</span><span class="n">alignedShape</span><span class="p">.</span><span class="n">numDimensions</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">out_aligned_size</span> <span class="o">=</span>
+        <span class="n">out_aligned_size</span> <span class="o">*</span> <span class="n">output_properties</span><span class="p">.</span><span class="n">alignedShape</span><span class="p">.</span><span class="n">dimensionSize</span><span class="p">[</span><span class="n">j</span><span class="p">];</span>
+  <span class="p">}</span>
+
+  <span class="n">hbSysMem</span> <span class="o">&amp;</span><span class="n">mem</span> <span class="o">=</span> <span class="n">output</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">sysMem</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+  <span class="n">hbSysAllocCachedMem</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mem</span><span class="p">,</span> <span class="n">out_aligned_size</span><span class="p">);</span>
+<span class="p">}</span>
+
+  <span class="c1">// 第六步推理模型</span>
+  <span class="n">hbDNNTaskHandle_t</span> <span class="n">task_handle</span> <span class="o">=</span> <span class="k">nullptr</span><span class="p">;</span>
+  <span class="n">hbDNNInferCtrlParam</span> <span class="n">infer_ctrl_param</span><span class="p">;</span>
+  <span class="n">HB_DNN_INITIALIZE_INFER_CTRL_PARAM</span><span class="p">(</span><span class="o">&amp;</span><span class="n">infer_ctrl_param</span><span class="p">);</span>
+  <span class="n">hbDNNInfer</span><span class="p">(</span><span class="o">&amp;</span><span class="n">task_handle</span><span class="p">,</span>
+              <span class="o">&amp;</span><span class="n">output</span><span class="p">,</span>
+              <span class="o">&amp;</span><span class="n">input</span><span class="p">,</span>
+              <span class="n">dnn_handle</span><span class="p">,</span>
+              <span class="o">&amp;</span><span class="n">infer_ctrl_param</span><span class="p">);</span>
+
+  <span class="c1">// 第七步等待任务结束</span>
+  <span class="n">hbDNNWaitTaskDone</span><span class="p">(</span><span class="n">task_handle</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+  <span class="c1">//第八步解析模型输出，例子就获取mobilenetv1的top1分类</span>
+  <span class="kt">float</span> <span class="n">max_prob</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">;</span>
+  <span class="kt">int</span> <span class="n">max_prob_type_id</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="n">hbSysFlushMem</span><span class="p">(</span><span class="o">&amp;</span><span class="p">(</span><span class="n">output</span><span class="o">-&gt;</span><span class="n">sysMem</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">HB_SYS_MEM_CACHE_INVALIDATE</span><span class="p">);</span>
+  <span class="kt">float</span> <span class="o">*</span><span class="n">scores</span> <span class="o">=</span> <span class="k">reinterpret_cast</span><span class="o">&lt;</span><span class="kt">float</span> <span class="o">*&gt;</span><span class="p">(</span><span class="n">output</span><span class="o">-&gt;</span><span class="n">sysMem</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">virAddr</span><span class="p">);</span>
+  <span class="kt">int</span> <span class="o">*</span><span class="n">shape</span> <span class="o">=</span> <span class="n">output</span><span class="o">-&gt;</span><span class="n">properties</span><span class="p">.</span><span class="n">validShape</span><span class="p">.</span><span class="n">dimensionSize</span><span class="p">;</span>
+  <span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">shape</span><span class="p">[</span><span class="mi">3</span><span class="p">];</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">scores</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">max_prob</span><span class="p">)</span>
+      <span class="k">continue</span><span class="p">;</span>
+    <span class="n">max_prob</span> <span class="o">=</span> <span class="n">scores</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+    <span class="n">max_prob_type_id</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;max id: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">max_prob_type_id</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+  <span class="c1">// 释放数据</span>
+  <span class="n">hbSysFreeMem</span><span class="p">(</span><span class="o">&amp;</span><span class="p">(</span><span class="n">input</span><span class="p">.</span><span class="n">sysMem</span><span class="p">[</span><span class="mi">0</span><span class="p">]));</span>
+  <span class="n">hbSysFreeMem</span><span class="p">(</span><span class="o">&amp;</span><span class="p">(</span><span class="n">output</span><span class="o">-&gt;</span><span class="n">sysMem</span><span class="p">[</span><span class="mi">0</span><span class="p">]));</span>
+
+  <span class="c1">// 释放模型</span>
+  <span class="n">hbDNNRelease</span><span class="p">(</span><span class="n">packed_dnn_handle</span><span class="p">);</span>
+
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>示例代码中，为了缩减篇幅，对于部分数据就直接使用了已知的常数。
+在实际使用过程中，您应该通过 <code class="docutils literal notranslate"><span class="pre">hbDNNGetInputTensorProperties/hbDNNGetOutputTensorProperties</span></code>
+等接口获取尺寸和数据类型等信息。</p>
+<p>需要您注意的是，在输入数据准备阶段，我们注释掉了一段 <code class="docutils literal notranslate"><span class="pre">memcpy</span></code> 代码。
+这里应当是根据模型的输入格式要求准备输入样本，并将其拷贝到 <code class="docutils literal notranslate"><span class="pre">input.sysMem[0]</span></code> 中，
+前文转换配置中的 <code class="docutils literal notranslate"><span class="pre">input_type_rt</span></code> 和 <code class="docutils literal notranslate"><span class="pre">input_layout_rt</span></code> 参数共同决定了模型使用什么样的输入，
+具体信息可以参考 <a class="reference internal" href="chapter_3_model_conversion.html#conversion-interpretation"><span class="std std-ref">转换内部过程解读</span></a> 部分的介绍。</p>
+<p>更加全面的工程实现指导，请您参考 <strong>《BPU SDK API手册》</strong>。</p>
+</div>
+<div class="section" id="compile-and-run">
+<span id="id5"></span><h2><span class="section-number">4.4. </span>工程编译与运行<a class="headerlink" href="#compile-and-run" title="永久链接至标题">¶</a></h2>
+<p>结合 <strong>工程创建</strong> 一节中的cmake工程配置，参考编译脚本如下：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># define gcc path for arm</span>
+<span class="nv">LINARO_GCC_ROOT</span><span class="o">=</span>/opt/gcc-linaro-6.5.0-2018.12-x86_64_aarch64-linux-gnu/
+
+<span class="nv">DIR</span><span class="o">=</span><span class="k">$(</span><span class="nb">cd</span> <span class="s2">&quot;</span><span class="k">$(</span>dirname <span class="s2">&quot;</span><span class="nv">$0</span><span class="s2">&quot;</span><span class="k">)</span><span class="s2">&quot;</span><span class="p">;</span><span class="nb">pwd</span><span class="k">)</span>
+
+<span class="nb">export</span> <span class="nv">CC</span><span class="o">=</span><span class="si">${</span><span class="nv">LINARO_GCC_ROOT</span><span class="si">}</span>/bin/aarch64-linux-gnu-gcc
+<span class="nb">export</span> <span class="nv">CXX</span><span class="o">=</span><span class="si">${</span><span class="nv">LINARO_GCC_ROOT</span><span class="si">}</span>/bin/aarch64-linux-gnu-g++
+
+rm -rf build_arm
+mkdir build_arm
+<span class="nb">cd</span> build_arm
+
+cmake <span class="si">${</span><span class="nv">DIR</span><span class="si">}</span>
+
+make -j8
+</pre></div>
+</div>
+<p>根据 <strong>第2章：环境部署</strong> 部分的指引，您的开发机中应该已经安装有相应编译器，将上述脚本中的编译器配置指定为您的安装项目即可。</p>
+<p>arm程序拷贝到地平线开发板上可运行，注意程序依赖的文件也需要一同拷贝到开发板，并在启动脚本中配置依赖。
+例如我们的示例程序依赖库有：libhbrt_bernoulli_aarch64.so、libdnn.so，
+这两个依赖库在本地的位置为：<cite>~/.horizon/aarch64/j3/dnn/lib</cite>，需要将之上传到板子的运行环境中。
+建议将库传送至板端 <cite>/userdata/lib</cite> 目录下，则在板端运行程序前，需指定的依赖库路径信息如下：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">LD_LIBRARY_PATH</span><span class="o">=</span><span class="nv">$LD_LIBRARY_PATH</span>:/userdata/lib
+</pre></div>
+</div>
+</div>
+<div class="section" id="id6">
+<h2><span class="section-number">4.5. </span>多模型控制策略<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h2>
+<p>多模型场景中，每个模型都需要使用有限的计算资源完成推理，不可避免地会出现计算资源地争夺情况。
+为了便于您控制多模型的执行，地平线提供了模型优先级的控制策略供您使用。</p>
+<div class="section" id="preemption">
+<span id="id7"></span><h3><span class="section-number">4.5.1. </span>模型优先级控制<a class="headerlink" href="#preemption" title="永久链接至标题">¶</a></h3>
+<p>XJ3芯片BPU计算单元硬件本身没有任务抢占功能，对于每一个推理任务，一旦它进到BPU模型计算之后，
+在该任务执行完成之前都会一直占用BPU，其他任务只能排队等待。
+此时很容易出现BPU计算资源被一个大模型推理任务所独占，进而影响其他高优先级模型的推理任务执行。
+针对这种问题，Runtime SDK基于模型的优先级通过软件的方式实现了BPU资源抢占的功能。</p>
+<p>其中有以下点需要被关注：</p>
+<ul class="simple">
+<li><p>编译后的数据指令模型在BPU上进行推理计算时，它将表现为1个或者多个function-call 的调用，其中function-call是BPU的执行粒度，
+多个function-call调用任务将在BPU的硬件队列上按序进行调度，当一个模型所有的function-call都执行完成，
+那么一个模型推理任务也就执行完成了。</p></li>
+<li><p>基于上述描述，BPU模型任务抢占粒度设计为function-call更为简单，即BPU执行完一个function-call之后，暂时挂起当前模型，
+然后切入执行另外一个模型，当新模型执行完成之后，再恢复原来模型的状态继续运行。但是这里存在两个问题，
+第一是经过编译器编译出来的模型function-call都是merge在一起，此时模型只有一个大的function-call，它无法被被抢占；
+第二是每个function-call的执行时间比较长或者不固定，也会造成抢占时机不固定，影响抢占效果。</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">dnn</span></code> 的 <code class="docutils literal notranslate"><span class="pre">infer</span></code> 接口提供 <code class="docutils literal notranslate"><span class="pre">hbDNNInferCtrlParam.priority</span></code> 参数供用户使用，
+如果您配置 <code class="docutils literal notranslate"><span class="pre">infer</span></code> 任务为 <code class="docutils literal notranslate"><span class="pre">HB_DNN_PRIORITY_PREEMP(255)</span></code>，
+则为抢占任务，在一次function-call执行后会进行抢占；您也可以配置优先级为 <code class="docutils literal notranslate"><span class="pre">[0,255]</span></code> 的任意等级，
+在同等条件下的执行队列中(粒度为任务)，优先级越高的task会更优先执行。</p>
+</div>
+</div>
+<div class="section" id="id8">
+<h2><span class="section-number">4.6. </span>应用调优建议<a class="headerlink" href="#id8" title="永久链接至标题">¶</a></h2>
+<p>地平线建议的应用调优策略包括工程任务调度和算法任务整合两个方面。</p>
+<p><strong>工程任务调度</strong> 方面，我们推荐您使用一些workflow调度管理工具，充分发挥不同任务阶段的并行能力。
+一般AI应用可以简单拆分为输入前处理、模型推理、输出后处理三个阶段，在简易流程下，其处理流程如下图。</p>
+<img alt="_images/app_optimization_1.png" class="align-center" src="_images/app_optimization_1.png" />
+<p>充分利用workflow管理实现不同任务阶段并行后，理想的任务处理流程将达到下图效果。</p>
+<img alt="_images/app_optimization_2.png" class="align-center" src="_images/app_optimization_2.png" />
+<p>地平线推荐的workflow管理工具是xstream，具体使用请参考《XStream算法SDK开发框架》。</p>
+<p>当然，XStream也不是必选的，您如果有自研的或者其他更加熟悉的workflow管理策略，也可以根据自己的实际需要选取。</p>
+<p><strong>算法任务整合</strong> 方面，地平线推荐您使用多任务模型。
+这样一方面可以在一定程度上避免多模型调度管理的困难；
+另一方面多任务模型也能充分共享主干网络的计算量，较于使用各个独立的模型，可以在整个AI应用级别明显减少计算量，从而达到更高的整体性能。
+在地平线内部和许多合作客户的业务实践中，多任务也是常见的应用级优化策略。</p>
+</div>
+<div class="section" id="id9">
+<h2><span class="section-number">4.7. </span>常见问题<a class="headerlink" href="#id9" title="永久链接至标题">¶</a></h2>
+<div class="section" id="nv12bgr">
+<h3><span class="section-number">4.7.1. </span>如何将摄像头输出的NV12图片转换为BGR等格式？<a class="headerlink" href="#nv12bgr" title="永久链接至标题">¶</a></h3>
+<p>地平线X/J3芯片未提供图片像素空间转换的加速硬件，因此有部分客户提出希望可以参考《常见问题FAQ手册》中的
+《FAQ-2-13：理解模型输入图片颜色空间转换功能》，通过API接口来开放BPU对像素空间转换进行加速。
+但是为了规避BPU的模型推理效率被该功能影响，经过地平线研发团队缜密评估后，决定暂不对用户开放。</p>
+<p>但是在ARM CPU上，用户也可以利用开源的libYUV库来加速该操作。
+经过测试验证，720P的图像，NV12转BGR，转换延迟低于7ms，满足大部分业务场景需求。</p>
+<p>针对libYUV库，您也可以自行利用linaro_gcc-6.5.0交叉编译工具链进行编译，或在地平线社区平台上寻求帮助，
+我们可以开放地平线优化过的libyuv内部版本的源码和预编译库，或直接在我们开放的AI Express组件开源源码中获取：
+<a class="reference external" href="https://github.com/HorizonRobotics-Platform/AI-EXPRESS/tree/master/deps/libyuv/include/libyuv">https://github.com/HorizonRobotics-Platform/AI-EXPRESS/tree/master/deps/libyuv/include/libyuv</a>。</p>
+</div>
+<div class="section" id="bpucache">
+<h3><span class="section-number">4.7.2. </span>如何理解BPU内存Cache<a class="headerlink" href="#bpucache" title="永久链接至标题">¶</a></h3>
+<p>在BPU SDK API文档中，我们提供了BPU内存函数 <code class="docutils literal notranslate"><span class="pre">hbSysAllocCachedMem</span></code> 和 <code class="docutils literal notranslate"><span class="pre">hbSysAllocMem</span></code> 来分配BPU读写内存。
+其中 <code class="docutils literal notranslate"><span class="pre">hbSysAllocCachedMem</span></code> 表示分配可以被cache的内存，
+并配套了 <code class="docutils literal notranslate"><span class="pre">hbSysFlushMem</span></code> 函数来对Cache进行刷新。</p>
+<p>Cache机制是由芯片BPU的Bernoulli内存架构来决定的，详细参考如下图所示。
+CPU与主存之间存在的Cache会缓存数据，而BPU与主存之间则没有cache。
+此时若错误使用Cache将会直接影响最终数据读写的准确性和效率。</p>
+<img alt="_images/cache_mechanism.png" class="align-center" src="_images/cache_mechanism.png" />
+<p>对于CPU写场景，即输入给BPU读的内存，由于数据会缓存到Cache中，导致memory主存中的数据仍是旧的，
+这样BPU执行模型的时候取的数据就是错的。因此CPU写完Memory以后需要主动把Cache中的数据flush到memory中。</p>
+<p>对于BPU写场景，即BPU中模型输出的内存。如果CPU曾经读取过memory中的数据，那么数据就有可能会被缓存到Cache中。
+这时如果BPU重新写了该Memory，那么CPU 在读取数据时仍然会先读取Cache，这样就会导致CPU读到错误的数据。
+所以在BPU写完Memory以后需要把Cache中上次读取到的数据清理掉。</p>
+<p>对于CPU写，如果仅仅用于BPU读，不用于后续其他场景读，推荐直接设置为非Cacheable，这样可以规避一次flush过程。</p>
+<p>对于BPU写，如果也仅仅被CPU解析过一次，那么也可以设置非Cacheable。
+但是如果会被读取多次，例如模型输出，则建议设置为Cacheable，加速CPU反复读的效率。</p>
+</div>
+<div class="section" id="bpu">
+<h3><span class="section-number">4.7.3. </span>理解BPU内存中的物理地址和虚拟地址<a class="headerlink" href="#bpu" title="永久链接至标题">¶</a></h3>
+<p>在Bernoulli芯片架构中，BPU和CPU共享同一个memory空间，通过 <code class="docutils literal notranslate"><span class="pre">hbSysAllocMem</span></code> 函数可以分配一段物理空间连续的内存用于BPU读写。
+函数返回值被包装在 <code class="docutils literal notranslate"><span class="pre">hbSysMem</span></code> 数据结构体中，它内部有 <code class="docutils literal notranslate"><span class="pre">phyAddr</span></code> 和 <code class="docutils literal notranslate"><span class="pre">virAddr</span></code> 两个字段分别表示其内存空间的物理地址和虚拟地址。
+由于这段内存空间是连续的，所以物理地址和虚拟地址都可以通过首地址进行表示，也可以对相应的内存进行读写。
+但是在实际使用过程中中，建议以 <code class="docutils literal notranslate"><span class="pre">hbSysMem</span></code> 和虚拟地址使用为主，非必须场景不要直接使用物理地址。</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="chapter_5_custom_op_development.html" class="btn btn-neutral float-right" title="5. 自定义算子开发" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="chapter_3_model_conversion.html" class="btn btn-neutral float-left" title="3. 模型转换" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; 版权所有 2021, Horizon Robotics.
+
+    </p>
+  </div>
+    
+    
+    
+    利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用了 
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    
+    由 <a href="https://readthedocs.org">Read the Docs</a>开发. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

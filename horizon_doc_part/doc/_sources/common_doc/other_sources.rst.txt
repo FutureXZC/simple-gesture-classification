@@ -1,0 +1,18 @@
+社区资源索引
+=======================
+.. note::
+    下面资源主要来源开发者社区以及地平线GITHUB空间。尽管大部分作者为地平线员工，但是相关信息不排除有错误理解，仅供参考，相关指标等信息一律以产品文档为主。
+
+.. csv-table::
+ :header: "编号", "资源描述", "资源地址"
+ :widths: 10, 40, 50
+
+ "1", "XJ3 浮点转换工具链在线培训视频", "https://developer.horizon.ai/learn/id=5fe94477bec8bc98cb7317aa"
+ "2", "X3 SDB生态开发板使用指南", "https://developer.horizon.ai/forum/id=5ef30e9438ca27ba02807723"
+ "3", "X3 SDB生态开发板镜像烧写说明", "https://developer.horizon.ai/forum/id=6055996ae70b787109b88382"
+ "4", "XJ3 浮点转换工具链配置文件踩坑点解析", "https://developer.horizon.ai/forum/id=5fe1d750cc8b1e59c8589ebf"
+ "5", "XJ3 浮点转换工具链模型转换精度解析", "https://developer.horizon.ai/forum/id=5fbf54b0bec8bc98cb72fdf8"
+ "6", "XJ3 浮点转换工具链模型转换精度问题定位方法", "https://developer.horizon.ai/forum/id=5f634708cc8b1e59c85831ce"
+ "7", "XJ3 多核BPU的合理使用技巧与建议", "https://developer.horizon.ai/forum/id=5fe008e7bec8bc98cb7311e2"
+
+   

@@ -1,0 +1,100 @@
+附录：芯片手册
+===================
+
+.. note::
+    下面配套手册会因为交付权限问题，导致部分文档链接会失效。如果您遇到相关问题，请联系地平线技术支持或销售进行解决。
+
+1. X3芯片材料
+------------------------
+
+.. csv-table::
+ :header: "编号", "名称", "文件地址"
+ :widths: 10, 40, 50
+
+ "1", "X3M 芯片Datasheet手册", DT-2500-2-X3M-Datasheet-V1.0.pdf_
+ "2", "X3E 芯片Datasheet手册", DT-2500-4-X3E-Datasheet-V1.0.pdf_
+ "3", "X3 芯片发布说明文档", RN-CN-2500-1-X3-发布说明-V0.1.pdf_
+ "4", "X3 硬件设计参考指南", MU-EN-2510-1-X3-Hardware_Design_Guide-V1.3.pdf_
+ "5", "X3 硬件参考设计勘误手册", ES-EN-2510-1-X3-Hardware_Reference_Design_Errata-V0P2.pdf_
+ "6", "X3 DDR板卡设计指南", AN-EN-2510-1-X3-DDR4_LPDDR4_Board_design_and_layout_guideline-V1.1.pdf_
+ "7", "X3 DDR板卡设计Checklist", MU-EN-2510-4-X3-DDR_Board_Design_Checklist.pdf_
+ "8", "X3 热参考设计指南", MU-EN-2510-3-X3-Thermal_Reference_Design-1.0.pdf_
+ "9", "X3 PLL_SD_EMAC时钟结构", MU-2500-1-X3-PLL_SD_EMAC_Clock_Structure-V1.2.pdf_
+ "10", "X3 PIN SW Reg参考手册", PL-2500-3-X3-PIN_SW_Reg-V1.2.xls_
+ "11", "X3 寄存器参考手册——PWM", RM-2500-11-X3-Register_Reference_Manual-PWM-V1.0.pdf_
+ "12", "X3 寄存器参考手册——I2S", RM-2500-12-X3-Register_Reference_Manual-I2S-V1.0.pdf_
+ "13", "X3 寄存器参考手册——BIFSPI", RM-2500-13-X3-Register_Reference_Manual-BIFSPI-V1.0.pdf_
+ "14", "X3 寄存器参考手册——QSPI", RM-2500-14-X3-egister_Reference_Manual-QSPI-V1.0.pdf_
+ "15", "X3 寄存器参考手册——BIFSD", RM-2500-15-X3-Register_Reference_Manual-BIFSD-V1.0.pdf_
+ "16", "X3 寄存器参考手册——RTC", RM-2500-16-X3-Register_Reference_Manual-RTC-V1.0.pdf_
+ "17", "X3 寄存器参考手册——Timer", RM-2500-17-X3-Register_Reference_Manual-Timer-V1.0.pdf_
+ "18", "X3 寄存器参考手册——USB", RM-2500-18-X3-Register_Reference_Manual-USB-V1.0.pdf_
+ "19", "X3 寄存器参考手册——LPWM", RM-2500-19-X3-Register_Reference_Manual-LPWM-V1.0.pdf_
+ "20", "X3 寄存器参考手册——Ethernet_MAC", RM-2500-4-X3-Register_Reference_Manual-Ethernet_MAC-V1.0.pdf_
+ "21", "X3 寄存器参考手册——GPIO", RM-2500-5-X3-Register_Reference_Manual-GPIO_PIN-V1.1.pdf_
+ "22", "X3 寄存器参考手册——I2C", RM-2500-6-X3-Register_Reference_Manual-I2C-V1.0.pdf_
+ "23", "X3 寄存器参考手册——MIPI", RM-2500-7-X3-Register_Reference_Manual-MIPI-V1.0.pdf_
+ "24", "X3 寄存器参考手册——UART", RM-2500-8-X3-Register_Reference_Manual-UART-V1.0.pdf_
+ "25", "X3 寄存器参考手册——SPI", RM-2500-9-X3-Register_Reference_Manual-SPI-V1.0.pdf_
+ "26", "X3 寄存器参考手册——eMMC", RM-2500-10-X3-Register_Reference_Manual-eMMC-V1.0.pdf_
+
+
+
+.. _DT-2500-2-X3M-Datasheet-V1.0.pdf: ../../ddk/doc/navigation/hardware/docs_en/chip/x3_datasheet/DT-2500-2-X3M-Datasheet-V1.0.pdf
+.. _DT-2500-4-X3E-Datasheet-V1.0.pdf: ../../ddk/doc/navigation/hardware/docs_en/chip/x3_datasheet/DT-2500-4-X3E-Datasheet-V1.0.pdf
+.. _RN-CN-2500-1-X3-发布说明-V0.1.pdf: ../../ddk/doc/navigation/hardware/docs_en/chip/x3_datasheet/RN-CN-2500-1-X3-发布说明-V0.1.pdf
+.. _MU-EN-2510-1-X3-Hardware_Design_Guide-V1.3.pdf: ../../ddk/doc/navigation/hardware/docs_en/board/MU-EN-2510-1-X3-Hardware-Design-Guide-V1.3.pdf 
+.. _ES-EN-2510-1-X3-Hardware_Reference_Design_Errata-V0P2.pdf: ../../ddk/doc/navigation/hardware/docs_en/board/others/errata_sheet/ES-EN-2510-1-X3-Hardware-Reference-Design-Errata-V0P2.pdf
+.. _AN-EN-2510-1-X3-DDR4_LPDDR4_Board_design_and_layout_guideline-V1.1.pdf: ../../ddk/doc/navigation/hardware/docs_en/board/AN-EN-2510-1-X3-DDR4-AND-LPDDR4-Board-design-and-layout-guideline-V1.1.pdf
+.. _MU-EN-2510-4-X3-DDR_Board_Design_Checklist.pdf: ../../ddk/doc/navigation/hardware/docs_en/board/MU-EN-2510-4-Sunrise-3-DDR-Board-Design-Checklist.pdf
+.. _MU-EN-2510-3-X3-Thermal_Reference_Design-1.0.pdf: ../../ddk/doc/navigation/hardware/docs_en/board/MU-EN-2510-3-X3-Thermal-Reference-Design-1.0.pdf
+.. _MU-2500-1-X3-PLL_SD_EMAC_Clock_Structure-V1.2.pdf: ../../ddk/doc/navigation/hardware/docs_en/chip/MU-2500-1-X3-PLL_SD_EMAC-Clock-Structure-V1.2.pdf
+.. _PL-2500-3-X3-PIN_SW_Reg-V1.2.xls: ../../ddk/doc/navigation/hardware/docs_en/chip/PL-2500-3-X3-PIN-SW-Reg-V1.2.xls
+.. _RM-2500-10-X3-Register_Reference_Manual-eMMC-V1.0.pdf: ../../ddk/doc/navigation/hardware/docs_en/chip/RM-2500-10-X3-Register-Reference-Manual-eMMC-V1.0.pdf
+.. _RM-2500-11-X3-Register_Reference_Manual-PWM-V1.0.pdf: ../../ddk/doc/navigation/hardware/docs_en/chip/RM-2500-11-X3-Register-Reference-Manual-PWM-V1.0.pdf
+.. _RM-2500-12-X3-Register_Reference_Manual-I2S-V1.0.pdf: ../../ddk/doc/navigation/hardware/docs_en/chip/RM-2500-12-X3-Register-Reference-Manual-I2S-V1.0.pdf
+.. _RM-2500-13-X3-Register_Reference_Manual-BIFSPI-V1.0.pdf: ../../ddk/doc/navigation/hardware/docs_en/chip/RM-2500-13-X3-Register-Reference-Manual-BIFSPI-V1.0.pdf
+.. _RM-2500-14-X3-egister_Reference_Manual-QSPI-V1.0.pdf: ../../ddk/doc/navigation/hardware/docs_en/chip/RM-2500-14-X3-Register-Reference-Manual-QSPI-V1.0.pdf
+.. _RM-2500-15-X3-Register_Reference_Manual-BIFSD-V1.0.pdf: ../../ddk/doc/navigation/hardware/docs_en/chip/RM-2500-15-X3-Register-Reference-Manual-BIFSD-V1.0.pdf
+.. _RM-2500-16-X3-Register_Reference_Manual-RTC-V1.0.pdf: ../../ddk/doc/navigation/hardware/docs_en/chip/RM-2500-16-X3-Register-Reference-Manual-RTC-V1.0.pdf
+.. _RM-2500-17-X3-Register_Reference_Manual-Timer-V1.0.pdf: ../../ddk/doc/navigation/hardware/docs_en/chip/RM-2500-17-X3-Register-Reference-Manual-Timer-V1.0.pdf
+.. _RM-2500-18-X3-Register_Reference_Manual-USB-V1.0.pdf: ../../ddk/doc/navigation/hardware/docs_en/chip/RM-2500-18-X3-Register-Reference-Manual-USB-V1.0.pdf
+.. _RM-2500-19-X3-Register_Reference_Manual-LPWM-V1.0.pdf: ../../ddk/doc/navigation/hardware/docs_en/chip/RM-2500-19-X3-Register-Reference-Manual-LPWM-V1.0.pdf
+.. _RM-2500-4-X3-Register_Reference_Manual-Ethernet_MAC-V1.0.pdf: ../../ddk/doc/navigation/hardware/docs_en/chip/RM-2500-4-X3-Register-Reference-Manual-Ethernet-MAC-V1.0.pdf
+.. _RM-2500-5-X3-Register_Reference_Manual-GPIO_PIN-V1.1.pdf: ../../ddk/doc/navigation/hardware/docs_en/chip/RM-2500-5-X3-Register-Reference-Manual-GPIO-AND-PIN-V1.1.pdf
+.. _RM-2500-6-X3-Register_Reference_Manual-I2C-V1.0.pdf: ../../ddk/doc/navigation/hardware/docs_en/chip/RM-2500-6-X3-Register-Reference-Manual-I2C-V1.0.pdf
+.. _RM-2500-7-X3-Register_Reference_Manual-MIPI-V1.0.pdf: ../../ddk/doc/navigation/hardware/docs_en/chip/RM-2500-7-X3-Register-Reference-Manual-MIPI-CSI-2-Host-AND-Device-AND-DSI-Host-V1.0.pdf
+.. _RM-2500-8-X3-Register_Reference_Manual-UART-V1.0.pdf: ../../ddk/doc/navigation/hardware/docs_en/chip/RM-2500-8-X3-Register-Reference-Manual-UART-V1.0.pdf
+.. _RM-2500-9-X3-Register_Reference_Manual-SPI-V1.0.pdf: ../../ddk/doc/navigation/hardware/docs_en/chip/RM-2500-9-X3-Register-Reference-Manual-SPI-V1.0.pdf
+
+2. J3芯片材料
+------------------------
+
+.. csv-table::
+ :header: "编号", "名称", "文件地址"
+ :widths: 10, 40, 50
+
+ "1", "J3 芯片Datasheet手册", DT-2501-2-J3-Datasheet-V1.3.pdf_
+ "2", "J3 芯片产品简介手册", DT-2501-1-J3-Product-Brief-V1.2.pdf_
+ "3", "J3 芯片硬件设计指南", MU-EN-2511-1-J3-Hardware-Design-Guide-V1.33.pdf_
+ "4", "J3 芯片应用开发包硬件用户手册", MU-EN-2511-2-J3-Application-Kit-HW-User-Mannual-V1.2.pdf_
+ "5", "J3 芯片热参考设计", MU-EN-2511-3-J3-Thermal-Reference-Design-V1.1.pdf_
+ "6", "J3 芯片DDR板卡设计清单", MU-EN-2511-4-J3-DDR-Board-Design-Checklist.pdf_
+ "7", "J3 芯片以太网MAC功能", DT-2501-24-J3-Ethernet-MAC-Features-V1.0.pdf_
+ "8", "J3 芯片寄存器参考手册--eMMC", RM-2501-10-J3-Register-Reference-Manual-eMMC-V1.0.pdf_
+ "9", "J3 芯片寄存器参考手册--PWM", RM-2501-11-J3-Register-Reference-Manual-PWM-V1.0.pdf_
+ "10", "J3 芯片寄存器参考手册--I2S", RM-2501-12-J3-Register-Reference-Manual-I2S-V1.0.pdf_
+ "11", "J3 芯片寄存器参考手册--BIFSPI", RM-2501-13-J3-Register-Reference-Manual-BIFSPI-V1.0.pdf_
+ "12", "J3 芯片寄存器参考手册--QSPI", RM-2501-14-J3-Register-Reference-Manual-QSPI-V1.1.pdf_
+ "13", "J3 芯片寄存器参考手册--BIFSD", RM-2501-15-J3-Register-Reference-Manual-BIFSD-V1.0.pdf_
+ "14", "J3 芯片寄存器参考手册--RTC", RM-2501-16-J3-Register-Reference-Manual-RTC-V1.0.pdf_
+ "15", "J3 芯片寄存器参考手册--Timer", RM-2501-17-J3-Register-Reference-Manual-Timer-V1.0.pdf_
+ "16", "J3 芯片寄存器参考手册--USB", RM-2501-18-J3-Register-Reference-Manual-USB-V1.0.pdf_
+ "17", "J3 芯片寄存器参考手册--LPWM", RM-2501-19-J3-Register-Reference-Manual-LPWM-V1.0.pdf_
+ "18", "J3 芯片寄存器参考手册--Ethernet-MAC", RM-2501-4-J3-Register-Reference-Manual-Ethernet-MAC-V1.0.pdf_
+ "19", "J3 芯片寄存器参考手册--GPIO-AND-PIN", RM-2501-5-J3-Register-Reference-Manual-GPIO-AND-PIN-V1.1.pdf_
+ "20", "J3 芯片寄存器参考手册--I2C", RM-2501-6-J3-Register-Reference-Manual-I2C-V1.0.pdf_
+ "21", "J3 芯片寄存器参考手册--MIPI-CSI-2-Host-AND-Device-DSI-Host", RM-2501-7-J3-Register-Reference-Manual-MIPI-CSI-2-Host-AND-Device-AND-DSI-Host-V1.0.pdf_
+ "22", "J3 芯片寄存器参考手册--UART", RM-2501-7-J3-Register-Reference-Manual-UART-V1.0.pdf_
+ "23", "J3 芯片寄存器参考手册--SPI", RM-2501-9-J3-Register-Reference-Manual-SPI-V1.1.pdf_
+

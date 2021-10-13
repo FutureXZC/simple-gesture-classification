@@ -1,0 +1,20 @@
+附录：板卡手册
+===================
+
+.. note::
+    下面配套手册会因为交付权限问题，导致部分文档链接会失效。如果您遇到相关问题，请联系地平线技术支持或销售进行解决。
+
+.. csv-table::
+ :header: "编号", "名称", "文件地址"
+ :widths: 5, 30, 50
+
+ "1", "X3 SDB开发板参考设计", X3SDB开发板参考设计V5.7.pdf_
+ "2", "J3 DVB开发版配套材料", J3DVB开发版配套材料_
+ "3", "hbupdate镜像烧录工具", hbupdate烧录工具修改说明.pdf_
+ "4", "系统添加自动启动项使用说明", XJ3添加启动项.pdf_
+
+
+.. _X3SDB开发板参考设计V5.7.pdf: ../../ddk/doc/navigation/hardware/docs_en/board/X3SDB开发板参考设计V5.7z
+.. _hbupdate烧录工具修改说明.pdf: ../../ddk/doc/navigation/bsp/docs_cn/development_manual/hbupdate烧录工具修改说明.pdf
+.. _XJ3添加启动项.pdf: ../../ddk/doc/navigation/bsp/docs_cn/debug_manual/XJ3添加启动项.pdf
+.. _J3DVB开发版配套材料: https://pan.horizon.ai/index.php/s/AyXify7Sg9xitGf/authenticate/showShare

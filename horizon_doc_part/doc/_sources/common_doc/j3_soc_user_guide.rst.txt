@@ -1,0 +1,34 @@
+征程J3芯片概述
+=====================================
+
+征程Journey3（简称 J3）是地平线在2020年推出的低功耗、高性能AI处理器，面向L2/L3级别的自动驾驶场景和座舱场景，用于构建周视感知，环视感知以及座舱感知等车载场景。
+
+.. image:: ./xj3_soc_images/horizon_j_soc.png
+    :align: center
+    :scale: 50%    
+
+J3芯片与X3M芯片SOC架构基本类似，属于同代芯片，内置了双核地平线BPU,  四核Cortex A53，采用 TSMC 16nm FFC工艺以及15x15mm, FCBGA封装。
+
+但是J3芯片相比X3芯片，它满足 **AEC-Q100 Grade 2车规级** 要求，提供了等效算5 TOPS，典型功耗2.5W。
+
+.. image:: ./xj3_soc_images/horizon_j_bpu.png
+    :align: center
+
+J3芯片在产品设计上，特别是BPU AI加速核的设计上，针对自动驾驶场景的"检测精度要求高","场景复杂多变","稳定性要求"等需求进行重点考虑，并注重真实AI计算能力输出，
+在DDR带宽与BPU MAC利用率优化并重，采用软硬协同地优化方式满足低功耗、高性能场景的需求。
+
+下图是J3与其他芯片， 在图像分类（ImageNet）任务下 MAPS（精度保证下平均处理速度）性能数据对比，
+
+.. image:: ./xj3_soc_images/horizon_j3_maps.png
+    :align: center
+
+J3在同等功耗情况下，可以获取得到非常高的AI计算能力输出。
+
+.. note::
+    MAPS (Mean Accuracy-guaranteed Processing Speed)是地平线对外公开的用于评估芯片的AI真实性能的一种新方法。
+    它针对应用场景的特点，在精度有保障的前提下，包容所有与算法相关的选择，评估芯片对数据的平均处理速度。
+
+    MAPS聚焦“快”和“准”两个关键评测维度，即在精度有保障范围内的平均处理速度，该评估方式旨在使用户能够通过可视化的图表感知AI芯片真实算力。
+    其公式为：MAPS = 所围面积 /（最高精度-最低精度)
+    
+    你可以参考地平线官网获取Maps详细解释：https://www.horizon.ai/technology.html
