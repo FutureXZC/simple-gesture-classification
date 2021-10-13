@@ -62,10 +62,14 @@ if __name__ == '__main__':
         transforms.RandomHorizontalFlip(p=0.5),
         transforms.RandomVerticalFlip(p=0.5),
         transforms.ToTensor(),
-        transforms.Normalize(mean=0.9932374954223633, std=0.06570420414209366),
+        transforms.Normalize(mean=0.9910072088241577, std=0.07824398577213287),
+    ])
+    transform_test = transforms.Compose([
+        transforms.ToTensor(),
+        transforms.Normalize(mean=0.9910072088241577, std=0.07824398577213287),
     ])
     train_data = SketchDataset(split='train', transform=transform_train)
-    test_data = SketchDataset(split='test', transform=transforms.ToTensor())
+    test_data = SketchDataset(split='test', transform=transform_test)
     train_loader = DataLoader(dataset=train_data, batch_size=64, shuffle=True)
     test_loader = DataLoader(dataset=test_data, batch_size=64, shuffle=True)
     for i, data in enumerate(train_loader):
@@ -74,5 +78,5 @@ if __name__ == '__main__':
         print('sk shape:', sk.shape, 'sk label shape:', label.shape)
         break
     print('sketch train data[0]:', train_data[0])
-    print('sketch train data length:', len(train_data))  # 840
-    print('sketch test data length:', len(test_data))  # 359
+    print('sketch train data length:', len(train_data))  # 967
+    print('sketch test data length:', len(test_data))  # 413
