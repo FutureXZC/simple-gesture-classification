@@ -4,6 +4,10 @@
 
 This project trains a four-classification model to support gesture recognition, which will be used on the Horizon development board for downstream tasks. Specifically, a four-category model (recognizing rectangles, squares, circles and triangles) was trained using sketch graph data, and four different shapes represented four different gestures respectively. The site data obtained by the camera will be spliced into continuous curves, and each curve will form a graph. The graph will be input into the model obtained by this project to obtain the recognition result. According to the identification results, corresponding to the different instructions of the system.
 
+## 骨干网络 Backbone
+
+AlexNet
+
 ## 数据集 Dataset
 
 数据集使用自构建的草图图形数据，包含201个圆形、200个三角形、200个正方形和799个三角形，训练集和测试集的划分比例为7 : 3。  
