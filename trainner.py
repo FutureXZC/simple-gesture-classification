@@ -23,6 +23,7 @@ class ShapeRecognitionTrainer:
 
     Attributes:
         classes: Total classes.
+        backbone: 'AlexNet' or 'VGG'.
 
     """
     def __init__(self, num_classes: int, backbone: str = 'AlexNet') -> None:
@@ -174,12 +175,21 @@ class ShapeRecognitionTrainer:
                 'optimizer_state_dict': self.optimizer.state_dict(),
             }, os.path.join('.', 'checkpoints', 'best.pth'))
 
-    def convert2onnx(self):
+    def convert2onnx(self, use_trained_model=False):
+        '''Convert pytorch model to onnx model.
+        Args:
+            use_trained_model: Whether to use trained best model.
+
+        Output:
+            .onnx file.
+        
+        '''
         log.logger.info("----- Start convert model to onnx -----")
-        pthfile = os.path.join('.', 'checkpoints', 'best.pth')
-        loaded_model = torch.load(pthfile)
-        self.backbone.load_state_dict(loaded_model['state_dict'])
-        # 图片输入的尺寸
+        if use_trained_model:
+            pthfile = os.path.join('.', 'checkpoints', 'best.pth')
+            loaded_model = torch.load(pthfile)
+            self.backbone.load_state_dict(loaded_model['state_dict'])
+        # input size
         dummy_input = torch.randn(1, 3, 224, 224)
         torch_out = torch.onnx._export(self.backbone,
                                        dummy_input,
@@ -200,5 +210,5 @@ class ShapeRecognitionTrainer:
 
 if __name__ == '__main__':
     trainer = ShapeRecognitionTrainer(num_classes=4, backbone='AlexNet')
-    # trainer.train(num_workers=2)
+    trainer.train(num_workers=2)
     trainer.convert2onnx()
