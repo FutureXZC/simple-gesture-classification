@@ -15,11 +15,16 @@ def default_sk_loader(path: str):
         Sketch matrix, 224 x 224.
     
     """
-    return Image.open(path).convert('L').resize((224, 224))
+    return Image.open(path).convert('RGB').resize((227, 227))
 
 
 class SketchDataset(Dataset):
     '''Generate sketch dataset
+
+    label: 0 -- triangle
+    label: 1 -- square
+    label: 2 -- rectangle
+    label: 3 -- circle
 
     Attributes:
         split:

@@ -2,16 +2,19 @@ import os
 from pathlib import Path
 import time
 
+from caffe2.python.onnx.backend import Caffe2Backend as onnx_caffe2_backend
+import numpy as np
+import onnx
 import torch
 from tensorboardX import SummaryWriter
 import torchvision.transforms as transforms
 
 from dataset import *
-from model import ResNet
+from model import AlexNet, VGG
 from utils import *
 
-BATCH_SIZE = 128
-EPOCH = 80
+BATCH_SIZE = 64
+EPOCH = 120
 log = Logger('log.txt')
 
 
@@ -22,14 +25,18 @@ class ShapeRecognitionTrainer:
         classes: Total classes.
 
     """
-    def __init__(self, classes: int) -> None:
-        device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-        self.backbone = ResNet(num_class=classes).to(device)
-        self.backbone = torch.nn.DataParallel(self.backbone, device_ids=[0, 1])
-        self.optimizer = torch.optim.SGD(list(self.backbone.parameters()), lr=0.001, weight_decay=1e-4, momentum=0.9)
+    def __init__(self, num_classes: int, backbone: str = 'AlexNet') -> None:
+        device = 'cpu'
+        if backbone == 'AlexNet':
+            self.backbone = AlexNet(num_classes=num_classes).to(device)
+            log.logger.info("----- Use AlexNet as backbone -----")
+        else:
+            self.backbone = VGG(num_classes=num_classes).to(device)
+            log.logger.info("----- Use VGG as backbone -----")
+        self.optimizer = torch.optim.Adam(list(self.backbone.parameters()))
         self.scheduler = torch.optim.lr_scheduler.StepLR(self.optimizer, step_size=20, gamma=0.1)
         self.device = device
-        self.classes = classes
+        self.classes = num_classes
         self.batch_size = BATCH_SIZE
         self.epochs = EPOCH
         self.save_model = True
@@ -44,7 +51,7 @@ class ShapeRecognitionTrainer:
         
         """
         transform_train = transforms.Compose([
-            transforms.RandomChoice([transforms.RandomCrop(224),
+            transforms.RandomChoice([transforms.RandomCrop(227),
                                      transforms.RandomRotation(degrees=(0, 180), fill=255)]),
             transforms.RandomHorizontalFlip(p=0.5),
             transforms.RandomVerticalFlip(p=0.5),
@@ -62,7 +69,7 @@ class ShapeRecognitionTrainer:
         test_loader = DataLoader(dataset=test_data, batch_size=64, shuffle=True, num_workers=num_workers)
         log.logger.info("----- Loading data completed -----")
 
-        max_acc = 99.75
+        max_acc = 83
         metrics = MetricFactory(self.classes, self.device)
         log.logger.info("----- Start training -----")
         for epoch in range(self.epochs):
@@ -122,7 +129,7 @@ class ShapeRecognitionTrainer:
             metrics: ACC, NN, FT, ST.
 
         """
-        predictions, features = self.backbone(query, return_features=True)
+        predictions = self.backbone(query)
         loss = cross_entropy_loss(predictions, label)
 
         metrics.update(predictions, label)
@@ -162,14 +169,36 @@ class ShapeRecognitionTrainer:
         """
         if (self.save_model and acc >= max_acc) or (epoch % 20 == 0):
             Path("checkpoints").mkdir(parents=True, exist_ok=True)
-            torch.save(
-                {
-                    'resnet18_state_dict': self.backbone.state_dict(),
-                    'optimizer_state_dict': self.optimizer.state_dict(),
-                }, os.path.join('.', 'checkpoints',
-                                str(epoch) + '_' + str(acc) + '.pth'))
+            torch.save({
+                'state_dict': self.backbone.state_dict(),
+                'optimizer_state_dict': self.optimizer.state_dict(),
+            }, os.path.join('.', 'checkpoints', 'best.pth'))
+
+    def convert2onnx(self):
+        log.logger.info("----- Start convert model to onnx -----")
+        pthfile = os.path.join('.', 'checkpoints', 'best.pth')
+        loaded_model = torch.load(pthfile)
+        self.backbone.load_state_dict(loaded_model['state_dict'])
+        # 图片输入的尺寸
+        dummy_input = torch.randn(1, 3, 224, 224)
+        torch_out = torch.onnx._export(self.backbone,
+                                       dummy_input,
+                                       "cls-alexnet.onnx",
+                                       export_params=True,
+                                       keep_initializers_as_inputs=True,
+                                       opset_version=10)
+        log.logger.info('torch out: ' + str(torch_out))
+
+        onnx_model = onnx.load("cls-alexnet.onnx")
+        prepared_backend = onnx_caffe2_backend.prepare(onnx_model)
+        W = {onnx_model.graph.input[0].name: dummy_input.data.numpy()}
+        c2_out = prepared_backend.run(W)[0]
+        log.logger.info('onnx out: ' + str(c2_out))
+
+        np.testing.assert_almost_equal(torch_out.data.cpu().numpy(), c2_out, decimal=3)
 
 
 if __name__ == '__main__':
-    trainer = ShapeRecognitionTrainer(classes=4)
-    trainer.train(num_workers=2)
+    trainer = ShapeRecognitionTrainer(num_classes=4, backbone='AlexNet')
+    # trainer.train(num_workers=2)
+    trainer.convert2onnx()
