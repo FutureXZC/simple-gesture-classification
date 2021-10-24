@@ -14,7 +14,7 @@ from model import AlexNet, VGG
 from utils import *
 
 BATCH_SIZE = 64
-EPOCH = 120
+EPOCH = 40
 log = Logger('log.txt')
 
 
@@ -65,8 +65,8 @@ class ShapeRecognitionTrainer:
         log.logger.info("----- Start loading data -----")
         train_data = SketchDataset(split='train', transform=transform_train)
         test_data = SketchDataset(split='test', transform=transform_test)
-        train_loader = DataLoader(dataset=train_data, batch_size=64, shuffle=True, num_workers=num_workers)
-        test_loader = DataLoader(dataset=test_data, batch_size=64, shuffle=True, num_workers=num_workers)
+        train_loader = DataLoader(dataset=train_data, batch_size=BATCH_SIZE, shuffle=True, num_workers=num_workers)
+        test_loader = DataLoader(dataset=test_data, batch_size=BATCH_SIZE, shuffle=True, num_workers=num_workers)
         log.logger.info("----- Loading data completed -----")
 
         max_acc = 83
