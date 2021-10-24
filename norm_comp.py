@@ -23,7 +23,8 @@ def getMeanAndStd(load_path: str):
         img_list.append(img)
 
     imgs = np.concatenate(img_list, axis=2)
-    imgs = imgs.astype(np.float32) / 255.
+    # imgs = imgs.astype(np.float32) / 255.
+    imgs = imgs.astype(np.float32)
     print('Shape: ({}, {}), total: {}'.format(imgs.shape[0], imgs.shape[1], imgs.shape[2]))
 
     pixels = imgs.ravel()
@@ -35,5 +36,6 @@ def getMeanAndStd(load_path: str):
 
 if __name__ == '__main__':
     # mean = 0.9910072088241577, std = 0.07824398577213287
+    # mean = 252.7069854736328, std = 19.952280044555664
     path = os.path.join('.', 'sketch-shape-dataset')
     getMeanAndStd(path)

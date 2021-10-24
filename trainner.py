@@ -27,7 +27,7 @@ class ShapeRecognitionTrainer:
 
     """
     def __init__(self, num_classes: int, backbone: str = 'AlexNet') -> None:
-        device = 'cpu'
+        device = 'cuda'
         if backbone == 'AlexNet':
             self.backbone = AlexNet(num_classes=num_classes).to(device)
             log.logger.info("----- Use AlexNet as backbone -----")
@@ -44,15 +44,14 @@ class ShapeRecognitionTrainer:
         self.tb = SummaryWriter(os.path.join('.', 'events'))
 
     def train(self, num_workers: int = 0):
-        """Train the student model.
+        """Train the model.
         
         Args:
-            batch_size: Batch size.
             num_workers: How many subprocesses to use for data loading. 0 means that the data will be loaded in the main process.
         
         """
         transform_train = transforms.Compose([
-            transforms.RandomChoice([transforms.RandomCrop(227),
+            transforms.RandomChoice([transforms.RandomCrop(224),
                                      transforms.RandomRotation(degrees=(0, 180), fill=255)]),
             transforms.RandomHorizontalFlip(p=0.5),
             transforms.RandomVerticalFlip(p=0.5),
@@ -191,6 +190,7 @@ class ShapeRecognitionTrainer:
             self.backbone.load_state_dict(loaded_model['state_dict'])
         # input size
         dummy_input = torch.randn(1, 3, 224, 224)
+        self.backbone = self.backbone.to('cpu')
         torch_out = torch.onnx._export(self.backbone,
                                        dummy_input,
                                        "cls-alexnet.onnx",
@@ -209,6 +209,6 @@ class ShapeRecognitionTrainer:
 
 
 if __name__ == '__main__':
-    trainer = ShapeRecognitionTrainer(num_classes=4, backbone='AlexNet')
+    trainer = ShapeRecognitionTrainer(num_classes=3, backbone='AlexNet')
     trainer.train(num_workers=2)
     trainer.convert2onnx()
