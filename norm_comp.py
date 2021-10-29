@@ -35,7 +35,11 @@ def getMeanAndStd(load_path: str):
 
 
 if __name__ == '__main__':
+    # 原始：
     # mean = 0.9910072088241577, std = 0.07824398577213287
     # mean = 252.7069854736328, std = 19.952280044555664
-    path = os.path.join('.', 'sketch-shape-dataset')
+    # 2000：
+    # mean = 0.9869946837425232, std = 0.09663939476013184
+    # mean = 251.6833953857422, std = 24.643047332763672
+    path = os.path.join('.', 'sketch-shape-2000')
     getMeanAndStd(path)

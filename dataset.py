@@ -35,7 +35,7 @@ class SketchDataset(Dataset):
 
     '''
     def __init__(self, split: str = 'train', transform: transforms = None, loader=default_sk_loader):
-        root = os.path.join('.', 'sketch-shape-dataset')
+        root = os.path.join('.', 'sketch-shape-2000')
         label = os.listdir(root)
         imgs = []
         for i in range(len(label)):
@@ -66,11 +66,11 @@ if __name__ == '__main__':
         transforms.RandomHorizontalFlip(p=0.5),
         transforms.RandomVerticalFlip(p=0.5),
         transforms.ToTensor(),
-        transforms.Normalize(mean=0.9910072088241577, std=0.07824398577213287),
+        transforms.Normalize(mean=0.9869946837425232, std=0.09663939476013184),
     ])
     transform_test = transforms.Compose([
         transforms.ToTensor(),
-        transforms.Normalize(mean=0.9910072088241577, std=0.07824398577213287),
+        transforms.Normalize(mean=0.9869946837425232, std=0.09663939476013184),
     ])
     train_data = SketchDataset(split='train', transform=transform_train)
     test_data = SketchDataset(split='test', transform=transform_test)

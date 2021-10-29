@@ -56,11 +56,11 @@ class ShapeRecognitionTrainer:
             transforms.RandomHorizontalFlip(p=0.5),
             transforms.RandomVerticalFlip(p=0.5),
             transforms.ToTensor(),
-            transforms.Normalize(mean=0.9910072088241577, std=0.07824398577213287),
+            transforms.Normalize(mean=0.9869946837425232, std=0.09663939476013184),
         ])
         transform_test = transforms.Compose([
             transforms.ToTensor(),
-            transforms.Normalize(mean=0.9910072088241577, std=0.07824398577213287),
+            transforms.Normalize(mean=0.9869946837425232, std=0.09663939476013184),
         ])
         log.logger.info("----- Start loading data -----")
         train_data = SketchDataset(split='train', transform=transform_train)
