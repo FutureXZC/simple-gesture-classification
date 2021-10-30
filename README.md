@@ -4,10 +4,6 @@
 
 This project trains a four-classification model to support gesture recognition, which will be used on the Horizon development board for downstream tasks. Specifically, a four-category model (recognizing rectangles, squares, circles and triangles) was trained using sketch graph data, and four different shapes represented four different gestures respectively. The site data obtained by the camera will be spliced into continuous curves, and each curve will form a graph. The graph will be input into the model obtained by this project to obtain the recognition result. According to the identification results, corresponding to the different instructions of the system.
 
-## 骨干网络 Backbone
-
-AlexNet
-
 ## 数据集 Dataset
 
 数据集使用自构建的草图图形数据，包含1995个圆形、1969个方形和1978个三角形，训练集和测试集的划分比例为7 : 3。  
@@ -17,6 +13,24 @@ AlexNet
 The dataset used self-constructed sketch graph data, including 201 circles, 200 triangles, 200 squares and 799 triangles, and the partition ratio of training set and test set was 7:3.  
 
 If you are interested in the data set used in this project, you can leave your contact information in the issue.
+
+## 训练环境 Environment
+
+- GPU: Tesla V100
+- CUDA Version: 10.2
+- PyTorch 1.9.0, torchvision 0.10.0
+
+## 单文件测试 Single image test
+
+```
+sh test.sh
+```
+
+## 模型训练 Model training
+
+```
+python trainner.py
+```
 
 ## 开发指南
 
